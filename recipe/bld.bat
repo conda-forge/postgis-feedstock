@@ -1,0 +1,9 @@
+copy %RECIPE_DIR%\build.sh build.sh
+copy %RECIPE_DIR%\pg.sh pg.sh
+
+set MSYSTEM=MINGW%ARCH%
+set MSYS2_PATH_TYPE=inherit
+set CHERE_INVOKING=1
+bash build.sh
+if errorlevel 1 exit 1
+exit 0
