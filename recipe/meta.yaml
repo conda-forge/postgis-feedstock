@@ -2,7 +2,7 @@
 {% set version = "2.4.3" %}
 {% set sha256 = "ea5374c5db6b645ba5628ddcb08f71d3b3d90a464d366b4e1d20d5a268bde4b9" %}
 
-{% set postgresql_version = "9.6.7" %}
+{% set postgresql_version = "9.6.8" %}
 
 package:
   name: {{ name|lower }}
