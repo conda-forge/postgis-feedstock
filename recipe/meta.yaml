@@ -2,8 +2,6 @@
 {% set version = "2.4.3" %}
 {% set sha256 = "ea5374c5db6b645ba5628ddcb08f71d3b3d90a464d366b4e1d20d5a268bde4b9" %}
 
-{% set postgresql_version = "10.3" %}
-
 package:
   name: {{ name|lower }}
   version: {{ version }}+{{ postgresql_version }}
@@ -29,7 +27,7 @@ requirements:
     - proj4 4.9.3
     - json-c 0.12|0.12.*
     - perl
-    - postgresql {{ postgresql_version }}
+    - postgresql {{ postgresql }}
     - toolchain
   run:
     - gdal 2.2.*
@@ -38,7 +36,7 @@ requirements:
     - pcre
     - proj4 4.9.3
     - json-c 0.12|0.12.*
-    - postgresql {{ postgresql_version }}
+    - postgresql
 
 test:
   commands:
