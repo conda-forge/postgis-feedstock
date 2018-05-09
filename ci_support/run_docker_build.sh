@@ -18,6 +18,7 @@ channels:
 
 conda-build:
  root-dir: /feedstock_root/build_artefacts
+ config_file: /opt/conda/conda_build_config.yaml
 
 show_channel_urls: true
 
