@@ -25,7 +25,7 @@ requirements:
     - gettext
     - pcre
     - proj4
-    - json-c {{ json_c }}
+    - json-c 
     - perl
     - postgresql {{ postgresql }}
     - toolchain
