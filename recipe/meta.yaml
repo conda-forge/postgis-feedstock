@@ -28,7 +28,7 @@ requirements:
     - json-c 
     - perl
     - postgresql
-    - {{ compiler('c') }}
+    - toolchain
   run:
     - gdal
     - geos
