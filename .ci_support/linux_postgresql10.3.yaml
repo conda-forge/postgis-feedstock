@@ -1,7 +1,11 @@
+c_compiler:
+- toolchain_c
 gdal:
 - '2.2'
 geos:
 - 3.6.2
+json_c:
+- '0.12'
 perl:
 - '5.26'
 pin_run_as_build:
@@ -9,6 +13,8 @@ pin_run_as_build:
     max_pin: x.x
   geos:
     max_pin: x.x.x
+  json_c:
+    max_pin: x.x
   perl:
     max_pin: x.x
   postgresql:
