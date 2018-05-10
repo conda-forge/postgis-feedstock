@@ -35,7 +35,7 @@ requirements:
     - gettext
     - pcre
     - proj4
-    - {{ pin_compatible('json-c') }}
+    - json-c
     - postgresql
 
 test:
