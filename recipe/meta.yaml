@@ -18,6 +18,8 @@ build:
   skip: True  # [ win ]
 
 requirements:
+  build:
+    - {{ compiler('c') }}
   host:
     - cunit
     - gdal
@@ -25,10 +27,9 @@ requirements:
     - gettext
     - pcre
     - proj4
-    - json-c 
+    - json-c
     - perl
     - postgresql
-    - toolchain
   run:
     - gdal
     - geos
