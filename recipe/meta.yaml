@@ -27,7 +27,7 @@ requirements:
     - proj4
     - json-c 
     - perl
-    - postgresql {{ postgresql }}
+    - postgresql
     - toolchain
   run:
     - gdal
