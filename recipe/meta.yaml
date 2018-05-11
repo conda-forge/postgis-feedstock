@@ -2,11 +2,9 @@
 {% set version = "2.4.3" %}
 {% set sha256 = "ea5374c5db6b645ba5628ddcb08f71d3b3d90a464d366b4e1d20d5a268bde4b9" %}
 
-{% set postgresql_version = "10.3" %}
-
 package:
   name: {{ name|lower }}
-  version: {{ version }}+{{ postgresql_version }}
+  version: {{ version }}
 
 source:
   fn: {{ name }}-{{ version }}.tar.gz
@@ -21,24 +19,25 @@ build:
 
 requirements:
   build:
+    - {{ compiler('c') }}
+  host:
     - cunit
-    - gdal 2.2.*
-    - geos 3.6.2
+    - gdal
+    - geos
     - gettext
     - pcre
-    - proj4 4.9.3
-    - json-c 0.12|0.12.*
+    - proj4
+    - json-c
     - perl
-    - postgresql {{ postgresql_version }}
-    - toolchain
+    - postgresql
   run:
-    - gdal 2.2.*
-    - geos 3.6.2
+    - gdal
+    - geos
     - gettext
     - pcre
-    - proj4 4.9.3
-    - json-c 0.12|0.12.*
-    - postgresql {{ postgresql_version }}
+    - proj4
+    - {{ pin_compatible('json-c') }}
+    - postgresql
 
 test:
   commands:
