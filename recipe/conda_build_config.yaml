@@ -1,6 +1,10 @@
 postgresql:
   - 9.6
   - 10.4
+json_c:  # [win]
+  - 0.13.1  # [win]
 pin_run_as_build:
   postgresql:
     max_pin: x.x
+  json_c:  # [win]
+    max_pin: x.x  # [win]
