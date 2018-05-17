@@ -20,7 +20,7 @@ pin_run_as_build:
   geos:
     max_pin: x.x.x
   json_c:
-    max_pin: x.x
+    max_pin: x.x.x
   perl:
     max_pin: x.x
   postgresql:
