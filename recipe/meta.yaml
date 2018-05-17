@@ -20,10 +20,11 @@ requirements:
   build:
     - {{ compiler('c') }}
   host:
-    - cunit
+    - cunit  # [unix]
     - gdal
     - geos
-    - gettext
+    - gettext  # [unix]
+    - m2-gettext  # [win]
     - pcre
     - proj4
     - json-c
@@ -32,7 +33,8 @@ requirements:
   run:
     - gdal
     - geos
-    - gettext
+    - gettext  # [unix]
+    - m2-gettext  # [win]
     - pcre
     - proj4
     - {{ pin_compatible('json-c') }}
