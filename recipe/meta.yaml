@@ -37,7 +37,7 @@ requirements:
     - m2-gettext  # [win]
     - pcre
     - proj4
-    - {{ pin_compatible('json-c') }}
+    - {{ pin_compatible('json-c', exact=true) }}
     - postgresql
 
 test:
