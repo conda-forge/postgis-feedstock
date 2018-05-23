@@ -30,6 +30,7 @@ requirements:
     - json-c
     - perl
     - postgresql
+    - vc  # [win]
   run:
     - gdal
     - geos
@@ -39,6 +40,7 @@ requirements:
     - proj4
     - {{ pin_compatible('json-c', exact=true) }}
     - postgresql
+    - vc  # [win]
 
 test:
   commands:
