@@ -1,5 +1,11 @@
 c_compiler:
 - toolchain_c
+channel_sources:
+- conda-forge,defaults
+channel_targets:
+- conda-forge main
+docker_image:
+- condaforge/linux-anvil
 gdal:
 - '2.2'
 geos:
@@ -13,10 +19,10 @@ pin_run_as_build:
     max_pin: x.x
   geos:
     max_pin: x.x.x
-  json_c:
+  json-c:
     max_pin: x.x
   perl:
-    max_pin: x.x
+    max_pin: x.x.x
   postgresql:
     max_pin: x.x
   proj4:
