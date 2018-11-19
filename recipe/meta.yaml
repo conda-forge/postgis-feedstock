@@ -1,6 +1,6 @@
 {% set name = "postgis" %}
-{% set version = "2.4.4" %}
-{% set sha256 = "0663efb589210d5048d95c817e5cf29552ec8180e16d4c6ef56c94255faca8c2" %}
+{% set version = "2.4.5" %}
+{% set sha256 = "2fe727dd7541859b5230f55c78885c605e0177676cbc18944ecb2779f8905d69" %}
 
 package:
   name: {{ name|lower }}
@@ -11,7 +11,7 @@ source:
   url: http://download.osgeo.org/{{ name }}/source/{{ name }}-{{ version }}.tar.gz
   sha256: {{ sha256 }}
   patches:
-    - 0001-gdal-test.patch
+    # - 0001-gdal-test.patch
 
 build:
   number: 0
