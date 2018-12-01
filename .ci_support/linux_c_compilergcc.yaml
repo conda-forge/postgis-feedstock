@@ -1,21 +1,19 @@
-MACOSX_DEPLOYMENT_TARGET:
-- '10.9'
+build_number_decrement:
+- '0'
 c_compiler:
-- toolchain_c
+- gcc
 channel_sources:
-- conda-forge,defaults
+- conda-forge/label/gcc7,defaults
 channel_targets:
-- conda-forge main
+- conda-forge gcc7
+docker_image:
+- condaforge/linux-anvil-comp7
 gdal:
 - '2.3'
 geos:
 - 3.7.0
 json_c:
 - '0.13'
-macos_machine:
-- x86_64-apple-darwin13.4.0
-macos_min_version:
-- '10.9'
 perl:
 - '5.26'
 pin_run_as_build:
@@ -35,3 +33,9 @@ postgresql:
 - '10.5'
 proj4:
 - 5.2.0
+zip_keys:
+- - c_compiler
+  - channel_sources
+  - channel_targets
+  - docker_image
+  - build_number_decrement
