@@ -11,7 +11,7 @@ source:
   url: http://download.osgeo.org/{{ name }}/source/{{ name }}-{{ version }}.tar.gz
   sha256: {{ sha256 }}
   patches:
-    # - 0001-gdal-test.patch
+    - 0001-use-gdal-config-deplibs.diff
 
 build:
   number: 1000
@@ -20,7 +20,10 @@ build:
 requirements:
   build:
     - {{ compiler('c') }}
-    - libxslt
+    - pkg-config
+    - autoconf
+    - automake
+    - libtool
   host:
     - cunit
     - gdal
@@ -30,6 +33,7 @@ requirements:
     - proj4
     - json-c
     - perl
+    - libxslt
     - postgresql
   run:
     - gdal

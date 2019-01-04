@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+
+$PREFIX/bin/pg_config $@ | sed -e "s|/home/conda/feedstock_root/build_artifacts/postgresql-split_[0-9]\+/_build_env|$BUILD_PREFIX|g"

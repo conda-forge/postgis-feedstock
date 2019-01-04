@@ -1,0 +1,13 @@
+diff --git a/configure.ac b/configure.ac
+index a9b6e29..cd62e1b 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -1343,7 +1343,7 @@ if test "x$with_raster" != "xno"; then
+ 
+ 		dnl Extract the linker and include flags
+ 		LIBGDAL_LDFLAGS=`$GDAL_CONFIG --libs`
+-		dnl LIBGDAL_DEPLIBS_LDFLAGS=`$GDAL_CONFIG --dep-libs`
++		LIBGDAL_DEPLIBS_LDFLAGS=`$GDAL_CONFIG --dep-libs`
+ 		LIBGDAL_CFLAGS=`$GDAL_CONFIG --cflags`
+ 
+ 		CPPFLAGS_SAVE="$CPPFLAGS"

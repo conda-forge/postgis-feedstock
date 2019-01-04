@@ -3,11 +3,20 @@ set -e
 
 . $RECIPE_DIR/pg.sh
 
+sed -i \
+  -e "s|/home/conda/feedstock_root/build_artifacts/postgresql-split_[0-9]\+/_build_env|$BUILD_PREFIX|g" \
+  $PREFIX/lib/pgxs/src/Makefile.global
+# SQL Preprocessor
+export CPPBIN=$CPP
+
+./autogen.sh
+
 
 chmod 755 configure
 ./configure \
     --prefix=$PREFIX \
-    --with-pgconfig=$PREFIX/bin/pg_config \
+    --with-pgconfig=$RECIPE_DIR/conda-pg_config \
+    --with-geosconfig=$PREFIX/bin/geos-config \
     --with-gdalconfig=$PREFIX/bin/gdal-config \
     --with-xml2config=$PREFIX/bin/xml2-config \
     --with-projdir=$PREFIX \
@@ -15,7 +24,7 @@ chmod 755 configure
     --with-libintl-prefix=$PREFIX \
     --with-jsondir=$PREFIX \
     --with-pcredir=$PREFIX \
-    --with-gettext \
+    --with-gettext=$PREFIX \
     --with-raster \
     --with-topology \
     --without-interrupt-tests
