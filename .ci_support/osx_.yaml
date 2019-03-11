@@ -1,15 +1,15 @@
 MACOSX_DEPLOYMENT_TARGET:
 - '10.9'
 c_compiler:
-- toolchain_c
+- clang
 channel_sources:
 - conda-forge,defaults
 channel_targets:
 - conda-forge main
 gdal:
-- '2.3'
+- '2.4'
 geos:
-- 3.7.0
+- 3.7.1
 json_c:
 - '0.13'
 macos_machine:
