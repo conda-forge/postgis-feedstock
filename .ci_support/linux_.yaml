@@ -1,5 +1,7 @@
 c_compiler:
 - gcc
+c_compiler_version:
+- '7'
 channel_sources:
 - conda-forge,defaults
 channel_targets:
@@ -30,4 +32,4 @@ pin_run_as_build:
 postgresql:
 - '10.5'
 proj4:
-- 5.2.0
+- 6.0.0
