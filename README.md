@@ -3,11 +3,11 @@ About postgis
 
 Home: http://postgis.net
 
-Package license: GPL2
+Package license: GPL-2.0
 
 Feedstock license: BSD 3-Clause
 
-Summary: PostGIS adds geometry, geography, raster and other types to the PostgreSQL database.
+Summary: PostGIS adds geometry, geography, raster and other types to the PostgreSQL database
 
 PostGIS is a spatial database extender for PostgreSQL object-relational
 database. It adds support for geographic objects allowing location
@@ -57,6 +57,7 @@ Current build status
       <img src="https://img.shields.io/badge/Windows-disabled-lightgrey.svg" alt="Windows disabled">
     </td>
   </tr>
+![ppc64le disabled](https://img.shields.io/badge/ppc64le-disabled-lightgrey.svg)
 </table>
 
 Current release info
@@ -152,5 +153,6 @@ Feedstock Maintainers
 =====================
 
 * [@dwnoble](https://github.com/dwnoble/)
+* [@ocefpaf](https://github.com/ocefpaf/)
 * [@sodre](https://github.com/sodre/)
 
