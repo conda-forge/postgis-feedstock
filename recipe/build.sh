@@ -4,7 +4,8 @@ set -e
 . $RECIPE_DIR/pg.sh
 
 export CFLAGS="-I$PREFIX/include"
-export LDFLAGS="-L$PREFIX/lib"
+export LDFLAGS="-L${PREFIX}/lib ${LDFLAGS}"
+export LD_LIBRARY_PATH="$PREFIX/lib:$LD_LIBRARY_PATH"
 export CPATH=${PREFIX}/include
 
 chmod 755 configure
