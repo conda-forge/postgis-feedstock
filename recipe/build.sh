@@ -10,7 +10,6 @@ export CPATH=${PREFIX}/include
 export LIBPQ_DIR=${PREFIX}
 export LIBRARY_PATH=${PREFIX}/lib
 
-
 chmod 755 configure
 ./configure \
     --prefix=$PREFIX \
