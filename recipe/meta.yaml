@@ -1,6 +1,6 @@
 {% set name = "postgis" %}
-{% set version = "2.5.1" %}
-{% set sha256 = "fb137056f43aae0e9d475dc5b7934eccce466f86f5ceeb69ec8b5cea26817a91" %}
+{% set version = "3.0.0alpha2" %}
+{% set sha256 = "5e56df0c10fdc6045ab748af0f74efd6a3aa167e8707ed2177a9f332447d237c" %}
 
 package:
   name: {{ name|lower }}
