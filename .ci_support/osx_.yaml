@@ -8,13 +8,10 @@ channel_sources:
 - conda-forge,defaults
 channel_targets:
 - conda-forge main
-<<<<<<< HEAD
 gdal:
 - '2.4'
 geos:
 - 3.7.1
-=======
->>>>>>> fc046e0f2ec92fc3e4ae15d532c14ca0adf7e966
 json_c:
 - '0.13'
 macos_machine:
@@ -28,7 +25,6 @@ pin_run_as_build:
     max_pin: x.x
   perl:
     max_pin: x.x.x
-<<<<<<< HEAD
   postgresql:
     max_pin: x.x
   proj4:
@@ -37,5 +33,3 @@ postgresql:
 - '11.3'
 proj4:
 - 6.1.0
-=======
->>>>>>> fc046e0f2ec92fc3e4ae15d532c14ca0adf7e966
