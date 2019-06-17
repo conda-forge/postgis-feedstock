@@ -1,15 +1,13 @@
 MACOSX_DEPLOYMENT_TARGET:
 - '10.9'
 c_compiler:
-- toolchain_c
+- clang
+c_compiler_version:
+- '4'
 channel_sources:
 - conda-forge,defaults
 channel_targets:
 - conda-forge main
-gdal:
-- '2.3'
-geos:
-- 3.7.0
 json_c:
 - '0.13'
 macos_machine:
@@ -19,19 +17,7 @@ macos_min_version:
 perl:
 - '5.26'
 pin_run_as_build:
-  gdal:
-    max_pin: x.x
-  geos:
-    max_pin: x.x.x
   json-c:
     max_pin: x.x
   perl:
     max_pin: x.x.x
-  postgresql:
-    max_pin: x.x
-  proj4:
-    max_pin: x.x.x
-postgresql:
-- '10.5'
-proj4:
-- 5.2.0
