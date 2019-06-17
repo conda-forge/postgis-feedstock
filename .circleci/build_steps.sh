@@ -25,7 +25,7 @@ conda install --yes --quiet conda-forge::conda-forge-ci-setup=2 conda-build
 setup_conda_rc "${FEEDSTOCK_ROOT}" "${RECIPE_ROOT}" "${CONFIG_FILE}"
 
 # A lock sometimes occurs with incomplete builds. The lock file is stored in build_artifacts.
-conda clean --lock
+# conda clean --lock
 
 source run_conda_forge_build_setup
 
