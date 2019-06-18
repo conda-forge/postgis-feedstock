@@ -40,4 +40,4 @@ pin_run_as_build:
 postgresql:
 - '10.5'
 proj4:
-- 6.1.0
+- 5.2.0
