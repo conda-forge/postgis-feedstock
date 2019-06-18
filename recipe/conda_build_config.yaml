@@ -1,5 +1,5 @@
 postgresql:
-  - 11.3
+  - 12beta1
 pin_run_as_build:
   postgresql:
     max_pin: x.x
