@@ -1,15 +1,17 @@
 MACOSX_DEPLOYMENT_TARGET:
 - '10.9'
 c_compiler:
-- toolchain_c
+- clang
+c_compiler_version:
+- '4'
 channel_sources:
 - conda-forge,defaults
 channel_targets:
 - conda-forge main
 gdal:
-- '2.3'
+- '2.4'
 geos:
-- 3.7.0
+- 3.7.1
 json_c:
 - '0.13'
 macos_machine:
@@ -34,4 +36,4 @@ pin_run_as_build:
 postgresql:
 - '10.5'
 proj4:
-- 5.2.0
+- 6.1.0
