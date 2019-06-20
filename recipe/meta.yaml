@@ -30,7 +30,7 @@ requirements:
     - proj4 >=5.2.0,<5.2.1.0a0
     - json-c
     - perl
-    - {{ pin_compatible('postgresql') }}
+
 
   run:
     - gdal 2.4,<3.0 
@@ -39,7 +39,7 @@ requirements:
     - pcre
     - proj4 >=5.2.0,<5.2.1.0a0
     - {{ pin_compatible('json-c') }}
-    - {{ pin_compatible('postgresql') }}
+
 
 test:
   commands:
