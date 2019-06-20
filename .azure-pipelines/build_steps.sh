@@ -12,6 +12,7 @@ export RECIPE_ROOT="${RECIPE_ROOT:-/home/conda/recipe_root}"
 export CI_SUPPORT="${FEEDSTOCK_ROOT}/.ci_support"
 export CONFIG_FILE="${CI_SUPPORT}/${CONFIG}.yaml"
 
+conda config --set channel_priority strict
 cat >~/.condarc <<CONDARC
 
 conda-build:
@@ -19,7 +20,7 @@ conda-build:
 
 CONDARC
 
-conda install --yes --quiet conda-forge-ci-setup=2 conda-build=3.17 -c conda-forge
+conda install --yes --quiet conda-forge-ci-setup=2 conda-build=3.17 -c conda-forge 
 
 # set up the condarc
 setup_conda_rc "${FEEDSTOCK_ROOT}" "${RECIPE_ROOT}" "${CONFIG_FILE}"
