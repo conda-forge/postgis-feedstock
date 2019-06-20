@@ -27,7 +27,7 @@ requirements:
     - geos >3.7
     - gettext
     - pcre
-    - proj4
+    - proj4 >=5.2.0,<5.2.1.0a0
     - json-c
     - perl
     - postgresql=10.5
@@ -37,7 +37,7 @@ requirements:
     - geos >3.7
     - gettext
     - pcre
-    - proj4
+    - proj4 >=5.2.0,<5.2.1.0a0
     - {{ pin_compatible('json-c') }}
     - postgresql=10.5
     - libpq=10.5
