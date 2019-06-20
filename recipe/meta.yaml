@@ -23,7 +23,7 @@ requirements:
     - libxslt
   host:
     - cunit
-    - gdal
+    - gdal >2.4
     - geos
     - gettext
     - pcre
@@ -32,7 +32,7 @@ requirements:
     - perl
     - postgresql
   run:
-    - gdal
+    - gdal >2.4
     - geos
     - gettext
     - pcre
