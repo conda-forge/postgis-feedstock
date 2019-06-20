@@ -24,7 +24,7 @@ requirements:
   host:
     - cunit
     - gdal >2.4
-    - geos
+    - geos >3.7
     - gettext
     - pcre
     - proj4
@@ -34,7 +34,7 @@ requirements:
     - libpq >=11.3,<12.0a0
   run:
     - gdal >2.4
-    - geos
+    - geos >3.7
     - gettext
     - pcre
     - proj4
