@@ -31,4 +31,4 @@ if [ $(uname) = "Linux" ]; then
     stop_db
 fi
 
-make install
+make install clean
