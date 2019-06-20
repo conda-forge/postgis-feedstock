@@ -23,7 +23,7 @@ requirements:
     - libxslt
   host:
     - cunit
-    - gdal >2.4
+    - gdal 2.4,<3.0
     - geos >3.7
     - gettext
     - pcre
