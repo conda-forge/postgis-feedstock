@@ -33,7 +33,7 @@ requirements:
     - postgresql=10.5
     - libpq=10.5
   run:
-    - gdal <3.0, 
+    - gdal 2.4,<3.0 
     - geos >3.7
     - gettext
     - pcre
