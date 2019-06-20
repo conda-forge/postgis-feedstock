@@ -31,7 +31,7 @@ requirements:
     - json-c
     - perl
     - postgresql=10.5
-    - libpq=10.5
+    #- libpq=10.5
   run:
     - gdal 2.4,<3.0 
     - geos >=3.7.1,<3.7.2.0a0
@@ -40,7 +40,7 @@ requirements:
     - proj4 >=5.2.0,<5.2.1.0a0
     - {{ pin_compatible('json-c') }}
     - postgresql=10.5
-    - libpq=10.5
+    #- libpq=10.5
 test:
   commands:
     - shp2pgsql
