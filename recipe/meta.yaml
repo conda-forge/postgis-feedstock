@@ -26,7 +26,7 @@ requirements:
     - gettext
     - pcre
     - proj4 >=5.2.0,<5.2.1.0a0
-    - {{ pin_compatible('json-c') }}
+    - json-c 0.12
 
   run:
     - gdal 2.4,<3.0 
@@ -34,7 +34,7 @@ requirements:
     - gettext
     - pcre
     - proj4 >=5.2.0,<5.2.1.0a0
-    - {{ pin_compatible('json-c') }}
+    - json-c 0.12
 
 
 test:
