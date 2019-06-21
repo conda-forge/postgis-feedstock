@@ -12,6 +12,7 @@ chmod 755 configure
     --with-xml2config=$PREFIX/bin/xml2-config \
     --with-projdir=$PREFIX \
     --with-libiconv-prefix=$PREFIX \
+    --with-libpq-prefix=$PREFIX \
     --with-libintl-prefix=$PREFIX \
     --with-jsondir=$PREFIX \
     --with-pcredir=$PREFIX \
