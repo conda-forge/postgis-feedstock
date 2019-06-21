@@ -29,7 +29,7 @@ requirements:
     - pcre
     - proj4 >=5.2.0,<5.2.1.0a0
     - json-c
-    - perl
+    - {{ pin_compatible('json-c') }}
 
 
   run:
