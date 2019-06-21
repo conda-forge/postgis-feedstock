@@ -10,8 +10,6 @@ source:
   fn: {{ name }}-{{ version }}.tar.gz
   url: http://download.osgeo.org/{{ name }}/source/{{ name }}-{{ version }}.tar.gz
   sha256: {{ sha256 }}
-  patches:
-    # - 0001-gdal-test.patch
 
 build:
   number: 0
@@ -28,9 +26,7 @@ requirements:
     - gettext
     - pcre
     - proj4 >=5.2.0,<5.2.1.0a0
-    - json-c
     - {{ pin_compatible('json-c') }}
-
 
   run:
     - gdal 2.4,<3.0 
