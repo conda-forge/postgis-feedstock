@@ -11,7 +11,7 @@ export LIBPQ_DIR=${PREFIX}/lib
 export LIBRARY_PATH=${PREFIX}/lib
 
 chmod 755 configure
-./configure \
+LIBRARY_PATH=${PREFIX}/lib ./configure ... \
     --prefix=$PREFIX \
     --with-pgconfig=$PREFIX/bin/pg_config \
     --with-gdalconfig=$PREFIX/bin/gdal-config \
@@ -25,7 +25,7 @@ chmod 755 configure
     --with-raster \
     --with-topology \
     --without-interrupt-tests
-make install clean
+make
 
 # There is an issue running shp2pgsql during build time on macOS.
 # It seems the side effect is that 26 unit tests fail.
