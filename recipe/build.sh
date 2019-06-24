@@ -11,7 +11,7 @@ export LIBPQ_DIR=${PREFIX}/lib
 export LIBRARY_PATH=${PREFIX}/lib
 
 chmod 755 configure
-LIBRARY_PATH=${PREFIX}/lib ./configure ... \
+LIBRARY_PATH=${PREFIX}/lib ./configure \
     --prefix=$PREFIX \
     --with-pgconfig=$PREFIX/bin/pg_config \
     --with-gdalconfig=$PREFIX/bin/gdal-config \
