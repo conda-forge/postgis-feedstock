@@ -3,7 +3,12 @@ set -e
 
 . $RECIPE_DIR/pg.sh
 	 
-export LIBPQ_DIR=${PREFIX}
+export CFLAGS="-I$PREFIX/include"
+export LDFLAGS="-L${PREFIX}/lib ${LDFLAGS}"
+export LD_LIBRARY_PATH="$PREFIX/lib:$LD_LIBRARY_PATH"
+export CPATH=${PREFIX}/include
+export LIBPQ_DIR=${PREFIX}/lib
+export LIBRARY_PATH=${PREFIX}/lib
 
 chmod 755 configure
 ./configure \
