@@ -12,7 +12,6 @@ chmod 755 configure
     --with-xml2config=$PREFIX/bin/xml2-config \
     --with-projdir=$PREFIX \
     --with-libiconv-prefix=$PREFIX \
-    --with-libpq-prefix=$PREFIX \
     --with-libintl-prefix=$PREFIX \
     --with-jsondir=$PREFIX \
     --with-pcredir=$PREFIX \
@@ -20,7 +19,7 @@ chmod 755 configure
     --with-raster \
     --with-topology \
     --without-interrupt-tests
-make
+make install clean
 
 # There is an issue running shp2pgsql during build time on macOS.
 # It seems the side effect is that 26 unit tests fail.
