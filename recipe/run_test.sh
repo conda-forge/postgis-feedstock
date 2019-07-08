@@ -1,7 +1,7 @@
 #/usr/bin/env bash
 set -e
 
-. $RECIPE_DIR/pg.sh
+. ${RECIPE_DIR}/pg.sh
 
 
 test_create_extension()

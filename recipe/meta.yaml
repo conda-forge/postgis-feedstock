@@ -1,26 +1,22 @@
-{% set name = "postgis" %}
-{% set version = "2.5.1" %}
-{% set sha256 = "fb137056f43aae0e9d475dc5b7934eccce466f86f5ceeb69ec8b5cea26817a91" %}
+{% set version = "2.5.2" %}
 
 package:
-  name: {{ name|lower }}
+  name: postgis
   version: {{ version }}
 
 source:
-  fn: {{ name }}-{{ version }}.tar.gz
-  url: http://download.osgeo.org/{{ name }}/source/{{ name }}-{{ version }}.tar.gz
-  sha256: {{ sha256 }}
-  patches:
-    # - 0001-gdal-test.patch
+  url: http://download.osgeo.org/postgis/source/postgis-{{ version }}.tar.gz
+  sha256: b6cb286c5016029d984f8c440947bf9178da72e1f6f840ed639270e1c451db5e
 
 build:
-  number: 1
-  skip: True  # [ win ]
+  number: 0
+  skip: True  # [win]
 
 requirements:
   build:
     - {{ compiler('c') }}
     - libxslt
+    - pkg-config
   host:
     - cunit
     - gdal
@@ -37,7 +33,7 @@ requirements:
     - gettext
     - pcre
     - proj4
-    - {{ pin_compatible('json-c') }}
+    - json-c
     - postgresql
 
 test:
@@ -48,7 +44,7 @@ test:
 
 about:
   home: http://postgis.net
-  license: GPL2
+  license: GPL-2.0
   license_family: GPL
   license_file: LICENSE.TXT
   summary: 'PostGIS adds geometry, geography, raster and other types to the PostgreSQL database.'
