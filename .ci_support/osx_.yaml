@@ -27,11 +27,7 @@ pin_run_as_build:
     max_pin: x.x
   perl:
     max_pin: x.x.x
-  postgresql:
-    max_pin: x.x
   proj4:
     max_pin: x.x.x
-postgresql:
-- '10.5'
 proj4:
 - 6.1.0

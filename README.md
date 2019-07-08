@@ -3,7 +3,7 @@ About postgis
 
 Home: http://postgis.net
 
-Package license: GPL2
+Package license: GPL-2.0
 
 Feedstock license: BSD 3-Clause
 
