@@ -1,15 +1,17 @@
 c_compiler:
-- toolchain_c
+- gcc
+c_compiler_version:
+- '7'
 channel_sources:
 - conda-forge,defaults
 channel_targets:
 - conda-forge main
 docker_image:
-- condaforge/linux-anvil
+- condaforge/linux-anvil-comp7
 gdal:
-- '2.3'
+- '2.4'
 geos:
-- 3.7.0
+- 3.7.2
 json_c:
 - '0.13'
 perl:
@@ -17,8 +19,6 @@ perl:
 pin_run_as_build:
   gdal:
     max_pin: x.x
-  geos:
-    max_pin: x.x.x
   json-c:
     max_pin: x.x
   perl:
@@ -30,4 +30,4 @@ pin_run_as_build:
 postgresql:
 - '10.5'
 proj4:
-- 5.2.0
+- 6.1.0
