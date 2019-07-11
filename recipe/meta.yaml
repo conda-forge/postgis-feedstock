@@ -1,6 +1,6 @@
 {% set name = "postgis" %}
 {% set version = "3.0.0alpha3" %}
-{% set sha256 = "b75e28139fe74158a27b7e7b2d1c2c0a7acb3abe8c60cfc72d45b0827dd12364" %}
+{% set sha256 = "2d98e19016f939146def7508f3667d84a29f100643b0b5bd7e7132f4cb04d9a6" %}
 
 package:
   name: {{ name|lower }}
@@ -39,9 +39,7 @@ requirements:
     - pcre
     - proj4 >=4.6.0
     - json-c >=0.9
-    - postgresql >=9.5
     - geos >=3.6
-    - libXML2 >=2.5
 
 
 test:
