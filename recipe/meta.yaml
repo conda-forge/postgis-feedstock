@@ -28,15 +28,17 @@ requirements:
     - gettext
     - pcre
     - proj4 >=4.6.0
-    - json-c
+    - json-c >=0.9
     - perl
     - postgresql >=9.5
+    - libXML2 >=2.5
+
   run:
     - gdal >=1.8
     - gettext
     - pcre
     - proj4 >=4.6.0
-    - {{ pin_compatible('json-c') }}
+    - json-c >=0.9
     - postgresql >=9.5
     - geos >=3.6
     - libXML2 >=2.5
