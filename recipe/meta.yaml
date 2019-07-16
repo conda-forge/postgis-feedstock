@@ -23,23 +23,23 @@ requirements:
     - libxslt
   host:
     - cunit
-    - gdal >=1.8
-    - geos >=3.6
+    - gdal
+    - geos
     - gettext
     - pcre
-    - proj4 >=4.6.0
-    - json-c >=0.9
+    - proj4
+    - json-c
     - perl
-    - postgresql >=9.5
-    - libXML2 >=2.5
+    - postgresql
+    - libXML2
 
   run:
-    - gdal >=1.8
+    - gdal
     - gettext
     - pcre
-    - proj4 >=4.6.0
-    - json-c >=0.9
-    - geos >=3.6
+    - proj4
+    - json-c
+    - geos
 
 
 test:
