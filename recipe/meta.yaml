@@ -21,25 +21,26 @@ requirements:
   build:
     - {{ compiler('c') }}
     - libxslt
+    - make
   host:
     - cunit
-    - gdal
-    - geos
+    - gdal >=1.8
+    - geos >=3.6
     - gettext
     - pcre
-    - proj4
-    - json-c
+    - proj4 >=4.6.0
+    - json-c >=0.9
     - perl
-    - postgresql
-    - libXML2
+    - postgresql >=9.5
+    - libXML2 >=2.5
 
   run:
-    - gdal
+    - gdal >=1.8
     - gettext
     - pcre
-    - proj4
-    - json-c
-    - geos
+    - proj4>=4.6.0
+    - json-c >=0.9
+    - geos >=3.6
 
 
 test:
