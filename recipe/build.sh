@@ -1,4 +1,10 @@
 #/usr/bin/env bash
+
+# avoid absolute-paths in compilers
+export CC=$(basename "$CC")
+export CXX=$(basename "$CXX")
+export FC=$(basename "$FC")
+
 set -e
 
 . $RECIPE_DIR/pg.sh
