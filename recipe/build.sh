@@ -1,14 +1,11 @@
 #/usr/bin/env bash
-
 set -e
 
 . $RECIPE_DIR/pg.sh
 
 chmod 755 configure
-
 ./configure \
     --prefix=$PREFIX \
-    --with-library-minor-version
     --with-pgconfig=$PREFIX/bin/pg_config \
     --with-gdalconfig=$PREFIX/bin/gdal-config \
     --with-xml2config=$PREFIX/bin/xml2-config \
