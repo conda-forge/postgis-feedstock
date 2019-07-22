@@ -20,28 +20,24 @@ build:
 requirements:
   build:
     - {{ compiler('c') }}
-    - libxslt
     - make
+
   host:
-    - cunit
     - gdal >=1.8
     - geos >=3.6
-    - gettext
-    - pcre
     - proj4 >=4.6.0
     - json-c >=0.9
-    - perl
     - postgresql >=9.5
-    - libXML2 >=2.5
+    - libxml2 >=2.5
+    - sfcgal >=1.3.7
 
   run:
     - gdal >=1.8
-    - gettext
-    - pcre
-    - proj4>=4.6.0
-    - json-c >=0.9
     - geos >=3.6
-
+    - proj4 >=4.6.0
+    - json-c >=0.9
+    - postgresql >=9.5
+    - libxml2 >=2.5
 
 test:
   commands:
@@ -61,7 +57,7 @@ about:
     database. It adds support for geographic objects allowing location
     queries to be run in SQL.
   doc_url: http://postgis.net/docs/manual-2.3/
-  dev_url: http://svn.osgeo.org/postgis/
+  dev_url: http://svn.osgeo.org/postgis/trunk
 
 extra:
   recipe-maintainers:
