@@ -8,16 +8,7 @@ channel_sources:
 - conda-forge,defaults
 channel_targets:
 - conda-forge main
-json_c:
-- '0.13'
 macos_machine:
 - x86_64-apple-darwin13.4.0
 macos_min_version:
 - '10.9'
-perl:
-- '5.26'
-pin_run_as_build:
-  json-c:
-    max_pin: x.x
-  perl:
-    max_pin: x.x.x
