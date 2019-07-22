@@ -3,6 +3,8 @@ set -e
 
 . ${RECIPE_DIR}/pg.sh
 
+export CPPBIN="${CPP}"
+
 ./configure \
     --prefix=${PREFIX} \
     --with-pgconfig=${PREFIX}/bin/pg_config \
