@@ -3,7 +3,10 @@ set -e
 
 . $RECIPE_DIR/pg.sh
 
-chmod 755 configure
+export CPPBIN="${CPP}"
+
+#chmod 755 configure
+
 ./configure \
     --prefix=$PREFIX \
     --with-pgconfig=$PREFIX/bin/pg_config \
