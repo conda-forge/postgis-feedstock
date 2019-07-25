@@ -5,7 +5,7 @@ set -e
 
 export CPPBIN="${CPP}"
 
-#chmod 755 configure
+chmod 755 configure
 
 ./configure \
     --prefix=$PREFIX \
