@@ -10,6 +10,7 @@ chmod 755 configure
 ./configure \
     --prefix=$PREFIX \
     --with-pgconfig=$PREFIX/bin/pg_config \
+    --with-geosconfig=$PREFIX/bin/geos-config \
     --with-gdalconfig=$PREFIX/bin/gdal-config \
     --with-xml2config=$PREFIX/bin/xml2-config \
     --with-projdir=$PREFIX \
@@ -20,6 +21,7 @@ chmod 755 configure
     --with-gettext \
     --with-raster \
     --with-topology \
+    --with-gui \
     --without-interrupt-tests
 make
 
