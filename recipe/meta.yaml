@@ -30,8 +30,6 @@ requirements:
     - json-c >=0.9
     - postgresql >=9.5
     - libxml2 >=2.5
-    - docbook
-    - gtk
     - cunit
 
   run:
@@ -41,8 +39,6 @@ requirements:
     - json-c >=0.9
     - postgresql >=9.5
     - libxml2 >=2.5
-    - docbook
-    - gtk
     - cunit
 
 
