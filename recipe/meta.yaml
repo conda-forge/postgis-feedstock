@@ -20,6 +20,7 @@ build:
 requirements:
   build:
     - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
     - make
 
   host:
@@ -29,6 +30,9 @@ requirements:
     - json-c >=0.9
     - postgresql >=9.5
     - libxml2 >=2.5
+    - docbook
+    - gtk
+    - cunit
 
   run:
     - gdal >=1.8
@@ -37,9 +41,9 @@ requirements:
     - json-c >=0.9
     - postgresql >=9.5
     - libxml2 >=2.5
-    - DocBook
-    - GTK
-    - CUnit
+    - docbook
+    - gtk
+    - cunit
 
 
 test:
