@@ -19,7 +19,7 @@ requirements:
     - pkg-config
   host:
     - cunit
-    - gdal
+    - libgdal
     - geos
     - gettext
     - pcre
@@ -28,7 +28,7 @@ requirements:
     - perl
     - postgresql
   run:
-    - gdal
+    - libgdal
     - geos
     - gettext
     - pcre
