@@ -1,12 +1,13 @@
-{% set version = "2.5.2" %}
+{% set version = "3.0.0dev" %}
+{% set commit = "aafcb2e8ef797be6537f160dc321396a6fb5c8c9" %}
 
 package:
   name: postgis
   version: {{ version }}
 
 source:
-  url: http://download.osgeo.org/postgis/source/postgis-{{ version }}.tar.gz
-  sha256: b6cb286c5016029d984f8c440947bf9178da72e1f6f840ed639270e1c451db5e
+  url: https://github.com/postgis/postgis/archive/{{ commit }}.tar.gz
+  sha256: 78924daee7e6742fcd10e40ee9d835b0021334c9c670199d36d87505cfe7c723
 
 build:
   number: 0
@@ -15,9 +16,12 @@ build:
 requirements:
   build:
     - {{ compiler('c') }}
-    - libxslt
     - pkg-config
+    - autoconf
+    - automake
+    - libtool
   host:
+    - libxslt
     - cunit
     - libgdal
     - geos
@@ -27,6 +31,7 @@ requirements:
     - json-c
     - perl
     - postgresql
+    - libpq
   run:
     - libgdal
     - geos
@@ -35,10 +40,13 @@ requirements:
     - proj4
     - json-c
     - postgresql
+    - libpq
 
 test:
+  files:
+    - test_data
   commands:
-    - shp2pgsql
+    - shp2pgsql test_data/test.shp
     - pgsql2shp
     - raster2pgsql
 
