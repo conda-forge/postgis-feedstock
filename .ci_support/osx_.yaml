@@ -13,7 +13,7 @@ geos:
 json_c:
 - '0.13'
 libgdal:
-- '2.4'
+- '3.0'
 macos_machine:
 - x86_64-apple-darwin13.4.0
 macos_min_version:
@@ -30,4 +30,4 @@ pin_run_as_build:
   proj4:
     max_pin: x.x.x
 proj4:
-- 6.1.0
+- 6.1.1
