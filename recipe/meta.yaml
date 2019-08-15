@@ -1,29 +1,29 @@
-{% set name = "postgis" %}
-{% set version = "2.5.1" %}
-{% set sha256 = "fb137056f43aae0e9d475dc5b7934eccce466f86f5ceeb69ec8b5cea26817a91" %}
+{% set version = "3.0.0dev" %}
+{% set commit = "aafcb2e8ef797be6537f160dc321396a6fb5c8c9" %}
 
 package:
-  name: {{ name|lower }}
+  name: postgis
   version: {{ version }}
 
 source:
-  fn: {{ name }}-{{ version }}.tar.gz
-  url: http://download.osgeo.org/{{ name }}/source/{{ name }}-{{ version }}.tar.gz
-  sha256: {{ sha256 }}
-  patches:
-    # - 0001-gdal-test.patch
+  url: https://github.com/postgis/postgis/archive/{{ commit }}.tar.gz
+  sha256: 78924daee7e6742fcd10e40ee9d835b0021334c9c670199d36d87505cfe7c723
 
 build:
   number: 0
-  skip: True  # [ win ]
+  skip: True  # [win]
 
 requirements:
   build:
     - {{ compiler('c') }}
-    - libxslt
+    - pkg-config
+    - autoconf
+    - automake
+    - libtool
   host:
+    - libxslt
     - cunit
-    - gdal
+    - libgdal
     - geos
     - gettext
     - pcre
@@ -31,24 +31,28 @@ requirements:
     - json-c
     - perl
     - postgresql
+    - libpq
   run:
-    - gdal
+    - libgdal
     - geos
     - gettext
     - pcre
     - proj4
-    - {{ pin_compatible('json-c') }}
+    - json-c
     - postgresql
+    - libpq
 
 test:
+  files:
+    - test_data
   commands:
-    - shp2pgsql
+    - shp2pgsql test_data/test.shp
     - pgsql2shp
     - raster2pgsql
 
 about:
   home: http://postgis.net
-  license: GPL2
+  license: GPL-2.0
   license_family: GPL
   license_file: LICENSE.TXT
   summary: 'PostGIS adds geometry, geography, raster and other types to the PostgreSQL database.'
