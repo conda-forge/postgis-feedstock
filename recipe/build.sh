@@ -25,10 +25,8 @@ export CPPBIN="${CPP}"
 
 make
 
-# Only one test is failing on macOS and Linux.
-# commenting this for now until we have a new release.
-# start_db
-# make check
-# stop_db
+start_db
+make check
+stop_db
 
 make install
