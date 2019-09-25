@@ -1,5 +1,5 @@
 {% set version = "3.0.0dev" %}
-{% set commit = "7dca5f6e5438a975f87c0252bb3b40f16ad6bdbf" %}
+{% set commit = "f9143caa9980aa2c4bc67d4fd5f1a575b246ba81" %}
 
 package:
   name: postgis
@@ -10,7 +10,7 @@ source:
   sha256: aea24b18b6963ec30555af0df5170c43b9ab9eb00a15b8fea8e0c3108caed4e2
 
 build:
-  number: 1
+  number: 3
   skip: True  # [win]
 
 requirements:
