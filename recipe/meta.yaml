@@ -10,7 +10,7 @@ source:
   sha256: 78924daee7e6742fcd10e40ee9d835b0021334c9c670199d36d87505cfe7c723
 
 build:
-  number: 1
+  number: 2
   skip: True  # [win]
 
 requirements:
@@ -27,7 +27,7 @@ requirements:
     - geos
     - gettext
     - pcre
-    - proj4
+    - proj
     - json-c
     - perl
     - postgresql
@@ -37,7 +37,7 @@ requirements:
     - geos
     - gettext
     - pcre
-    - proj4
+    - proj
     - json-c
     - postgresql
     - libpq
