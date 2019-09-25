@@ -23,12 +23,5 @@ pin_run_as_build:
     max_pin: x.x
   perl:
     max_pin: x.x.x
-<<<<<<< HEAD
 proj:
 - 6.2.0
-=======
-  proj4:
-    max_pin: x.x.x
-proj4:
-- 6.1.1
->>>>>>> re-render, try new commit, re-try tests
