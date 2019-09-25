@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://github.com/postgis/postgis/archive/{{ commit }}.tar.gz
-  sha256: aea24b18b6963ec30555af0df5170c43b9ab9eb00a15b8fea8e0c3108caed4e2
+  sha256: 7b5e0c222d9806b20a65d80162d798cf9bf07976b476204e41f96b8e8ffa81f2
 
 build:
   number: 3
