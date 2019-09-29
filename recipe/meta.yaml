@@ -1,4 +1,4 @@
-{% set version = "3.0.0dev" %}
+{% set version = "3.0.0" %}
 {% set commit = "aafcb2e8ef797be6537f160dc321396a6fb5c8c9" %}
 
 package:
@@ -10,7 +10,7 @@ source:
   sha256: 78924daee7e6742fcd10e40ee9d835b0021334c9c670199d36d87505cfe7c723
 
 build:
-  number: 2
+  number: 0
   skip: True  # [win]
 
 requirements:
