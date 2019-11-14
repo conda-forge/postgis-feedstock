@@ -159,4 +159,5 @@ Feedstock Maintainers
 
 * [@dwnoble](https://github.com/dwnoble/)
 * [@sodre](https://github.com/sodre/)
+* [@xylar](https://github.com/xylar/)
 
