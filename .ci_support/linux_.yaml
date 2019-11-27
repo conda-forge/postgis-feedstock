@@ -9,7 +9,7 @@ channel_targets:
 docker_image:
 - condaforge/linux-anvil-comp7
 geos:
-- 3.7.2
+- 3.8.0
 json_c:
 - '0.13'
 libgdal:
