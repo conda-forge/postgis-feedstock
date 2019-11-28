@@ -55,14 +55,14 @@ about:
   license: GPL-2.0
   license_family: GPL
   license_file: LICENSE.TXT
-  summary: 'PostGIS adds geometry, geography, raster and other types to the PostgreSQL database.'
+  summary: PostGIS adds geometry, geography, raster and other types to the PostgreSQL database.
 
   description: |
     PostGIS is a spatial database extender for PostgreSQL object-relational
     database. It adds support for geographic objects allowing location
     queries to be run in SQL.
-  doc_url: http://postgis.net/docs/manual-2.3/
-  dev_url: http://svn.osgeo.org/postgis/
+  doc_url: http://postgis.net/documentation/
+  dev_url: https://git.osgeo.org/gitea/postgis/postgis
 
 extra:
   recipe-maintainers:
