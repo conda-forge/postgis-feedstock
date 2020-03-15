@@ -9,7 +9,7 @@ channel_sources:
 channel_targets:
 - conda-forge main
 geos:
-- 3.8.0
+- 3.8.1
 json_c:
 - '0.13'
 libgdal:
