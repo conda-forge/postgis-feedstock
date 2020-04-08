@@ -28,4 +28,4 @@ pin_run_as_build:
   perl:
     max_pin: x.x.x
 proj:
-- 6.3.1
+- 7.0.0
