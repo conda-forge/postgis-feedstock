@@ -5,7 +5,7 @@ Home: http://postgis.net
 
 Package license: GPL-2.0
 
-Feedstock license: BSD 3-Clause
+Feedstock license: BSD-3-Clause
 
 Summary: PostGIS adds geometry, geography, raster and other types to the PostgreSQL database.
 

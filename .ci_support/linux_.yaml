@@ -13,7 +13,7 @@ geos:
 json_c:
 - '0.13'
 libgdal:
-- '3.0'
+- '3.1'
 perl:
 - 5.26.2
 pin_run_as_build:
