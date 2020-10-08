@@ -24,4 +24,6 @@ pin_run_as_build:
   perl:
     max_pin: x.x.x
 proj:
-- 7.1.0
+- 7.1.1
+target_platform:
+- linux-64
