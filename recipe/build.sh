@@ -4,6 +4,7 @@ set -e
 . ${RECIPE_DIR}/pg.sh
 
 export CPPBIN="${CPP}"
+export PG_SYSROOT=$CONDA_BUILD_SYSROOT
 
 ./autogen.sh
 
