@@ -1,4 +1,4 @@
-{% set version = "3.0.3" %}
+{% set version = "3.1.1" %}
 
 package:
   name: postgis
@@ -6,9 +6,7 @@ package:
 
 source:
   url: https://download.osgeo.org/postgis/source/postgis-{{ version }}.tar.gz
-  sha256: 07fedbd046cbed55d24bb22474890a4651d0223b6e12d2dac1517b9a43674817
-  patches:
-    - 0001-fix-totopogeom-test.patch
+  sha256: 0e96afef586db6939d48fb22fbfbc9d0de5e6bc1722d6d553d63bb41441a2a7d
 
 build:
   number: 0

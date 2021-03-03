@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+
 set -e
 
 . ${RECIPE_DIR}/pg.sh
@@ -21,7 +22,8 @@ export CPPBIN="${CPP}"
     --with-raster \
     --with-topology \
     --disable-nls \
-    --without-interrupt-tests
+    --without-interrupt-tests \
+    --without-protobuf
 
 make
 
