@@ -1,16 +1,15 @@
-{% set version = "3.0.1" %}
-{% set commit = "aafcb2e8ef797be6537f160dc321396a6fb5c8c9" %}
+{% set version = "3.0.3" %}
 
 package:
   name: postgis
   version: {{ version }}
 
 source:
-  url: https://github.com/postgis/postgis/archive/{{ commit }}.tar.gz
-  sha256: 78924daee7e6742fcd10e40ee9d835b0021334c9c670199d36d87505cfe7c723
+  url: https://download.osgeo.org/postgis/source/postgis-{{ version }}.tar.gz
+  sha256: 07fedbd046cbed55d24bb22474890a4651d0223b6e12d2dac1517b9a43674817
 
 build:
-  number: 7
+  number: 0
   skip: True  # [win]
 
 requirements:
