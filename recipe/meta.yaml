@@ -7,6 +7,8 @@ package:
 source:
   url: https://download.osgeo.org/postgis/source/postgis-{{ version }}.tar.gz
   sha256: 07fedbd046cbed55d24bb22474890a4651d0223b6e12d2dac1517b9a43674817
+  patches:
+    - 0001-fix-totopogeom-test.patch
 
 build:
   number: 0
