@@ -7,6 +7,8 @@ package:
 source:
   url: https://download.osgeo.org/postgis/source/postgis-{{ version }}.tar.gz
   sha256: 0e96afef586db6939d48fb22fbfbc9d0de5e6bc1722d6d553d63bb41441a2a7d
+  patches:
+    - 0001-fix-test_geos_makevalid.patch
 
 build:
   number: 0
