@@ -11,7 +11,7 @@ channel_targets:
 docker_image:
 - quay.io/condaforge/linux-anvil-comp7
 geos:
-- 3.9.0
+- 3.9.1
 json_c:
 - '0.15'
 libgdal:
