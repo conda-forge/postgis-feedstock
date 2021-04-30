@@ -10,7 +10,7 @@ source:
   sha256: 78924daee7e6742fcd10e40ee9d835b0021334c9c670199d36d87505cfe7c723
 
 build:
-  number: 6
+  number: 7
   skip: True  # [win]
 
 requirements:
@@ -66,6 +66,7 @@ about:
 
 extra:
   recipe-maintainers:
+    - mxr-conda
     - sodre
     - dwnoble
     - xylar
