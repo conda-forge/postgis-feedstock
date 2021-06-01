@@ -21,9 +21,10 @@ export CPPBIN="${CPP}"
     --with-raster \
     --with-topology \
     --disable-nls \
-    --without-interrupt-tests
+    --without-interrupt-tests \
+    --without-protobuf
 
-make
+make -j$CPU_COUNT
 
 # Only one test is failing on macOS and Linux.
 # commenting this for now until we have a new release.
