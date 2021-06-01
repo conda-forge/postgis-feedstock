@@ -5,7 +5,7 @@ package:
   version: {{ version }}
 
 source:
-  url: https://github.com/postgis/postgis/archive/{{ commit }}.tar.gz
+  url: https://github.com/postgis/postgis/archive/{{ version }}.tar.gz
   sha256: c49b6baa4afe4aed6cc7333399897aaf7540b40779a939a4d5a81d0725f6c9f8
 
 build:
