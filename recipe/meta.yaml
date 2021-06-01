@@ -32,6 +32,7 @@ requirements:
     - perl
     - postgresql
     - libpq
+    - libprotobuf
   run:
     - libgdal
     - geos
