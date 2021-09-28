@@ -28,7 +28,7 @@ pin_run_as_build:
   perl:
     max_pin: x.x.x
 proj:
-- 8.0.1
+- 8.1.0
 target_platform:
 - linux-64
 zip_keys:
