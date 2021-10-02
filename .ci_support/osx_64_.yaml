@@ -5,7 +5,7 @@ c_compiler:
 c_compiler_version:
 - '11'
 channel_sources:
-- conda-forge,defaults
+- conda-forge
 channel_targets:
 - conda-forge main
 geos:
@@ -28,6 +28,6 @@ pin_run_as_build:
   perl:
     max_pin: x.x.x
 proj:
-- 8.1.0
+- 8.1.1
 target_platform:
 - osx-64
