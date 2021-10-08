@@ -19,7 +19,7 @@ libgdal:
 pcre:
 - '8'
 perl:
-- 5.26.2
+- 5.32.1
 pin_run_as_build:
   json-c:
     max_pin: x.x
