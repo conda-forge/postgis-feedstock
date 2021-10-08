@@ -20,6 +20,7 @@ requirements:
     - automake
     - libtool
     - make
+    - perl 5.*
   host:
     - libxslt
     - cunit
@@ -29,7 +30,6 @@ requirements:
     - pcre
     - proj
     - json-c
-    - perl
     - postgresql
     - libpq
   run:
