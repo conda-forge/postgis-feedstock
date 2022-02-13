@@ -7,6 +7,10 @@ export CPPBIN="${CPP}"
 
 ./autogen.sh
 
+# OSX seems to be having trouble finding stdc++
+# see note at https://postgis.net/docs/manual-3.2/postgis_installation.html#PGInstall
+export LDFLAGS="-lstdc++ $LDFLAGS"
+
 ./configure \
     --prefix=${PREFIX} \
     --libdir=${PREFIX}/lib \
