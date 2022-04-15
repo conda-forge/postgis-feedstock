@@ -17,7 +17,7 @@ docker_image:
 geos:
 - 3.10.2
 json_c:
-- '0.15'
+- '0.16'
 libgdal:
 - '3.4'
 pcre:
