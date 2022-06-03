@@ -19,7 +19,7 @@ geos:
 json_c:
 - '0.16'
 libgdal:
-- '3.4'
+- '3.5'
 pcre:
 - '8'
 pin_run_as_build:
