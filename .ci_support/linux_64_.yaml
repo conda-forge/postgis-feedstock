@@ -28,7 +28,7 @@ pin_run_as_build:
   libgdal:
     max_pin: x.x
 proj:
-- 9.0.0
+- 9.0.1
 target_platform:
 - linux-64
 zip_keys:
