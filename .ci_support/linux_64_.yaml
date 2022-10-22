@@ -22,13 +22,8 @@ libgdal:
 - '3.5'
 pcre:
 - '8'
-pin_run_as_build:
-  json-c:
-    max_pin: x.x
-  libgdal:
-    max_pin: x.x
 proj:
-- 9.0.1
+- 9.1.0
 target_platform:
 - linux-64
 zip_keys:
