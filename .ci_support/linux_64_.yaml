@@ -27,7 +27,7 @@ pcre:
 postgresql:
 - '15'
 proj:
-- 9.1.0
+- 9.1.1
 target_platform:
 - linux-64
 zip_keys:
