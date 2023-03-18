@@ -1,11 +1,11 @@
-About postgis
-=============
+About postgis-feedstock
+=======================
+
+Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/postgis-feedstock/blob/main/LICENSE.txt)
 
 Home: http://postgis.net
 
 Package license: GPL-2.0-or-later
-
-Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/postgis-feedstock/blob/main/LICENSE.txt)
 
 Summary: PostGIS adds geometry, geography, raster and other types to the PostgreSQL database.
 
