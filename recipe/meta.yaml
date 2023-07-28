@@ -1,4 +1,4 @@
-{% set version = "3.3.3" %}
+{% set version = "3.3.4" %}
 
 package:
   name: postgis
@@ -6,10 +6,10 @@ package:
 
 source:
   url: https://github.com/postgis/postgis/archive/{{ version }}.tar.gz
-  sha256: 441bb33bd2be362c7c463161207f290a1c25083027a069322696eeec74fc916b
+  sha256: 68507aa4ab7f9f7218fcefdcdd989911415e5f670128eb33acbbb362a24a998e
 
 build:
-  number: 2
+  number: 0
   skip: true  # [win]
 
 requirements:
