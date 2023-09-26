@@ -33,11 +33,6 @@ requirements:
     - json-c
     - postgresql
     - libpq
-  run:
-    - libgdal
-    - geos
-    - proj
-    - json-c
 
 test:
   files:
