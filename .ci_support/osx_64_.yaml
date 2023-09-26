@@ -19,13 +19,13 @@ json_c:
 libgdal:
 - '3.7'
 libpq:
-- '15'
+- '16'
 macos_machine:
 - x86_64-apple-darwin13.4.0
 pcre:
 - '8'
 postgresql:
-- '15'
+- '16'
 proj:
 - 9.3.0
 target_platform:
