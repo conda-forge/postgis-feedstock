@@ -36,7 +36,6 @@ requirements:
   run:
     - libgdal
     - geos
-    - pcre
     - proj
     - json-c
 
