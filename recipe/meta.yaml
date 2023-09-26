@@ -36,12 +36,9 @@ requirements:
   run:
     - libgdal
     - geos
-    - gettext
     - pcre
     - proj
     - json-c
-    - postgresql
-    - libpq
 
 test:
   files:
