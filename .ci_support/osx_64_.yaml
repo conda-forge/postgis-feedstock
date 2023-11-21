@@ -17,7 +17,7 @@ geos:
 json_c:
 - '0.17'
 libgdal:
-- '3.7'
+- '3.8'
 libpq:
 - '16'
 macos_machine:
