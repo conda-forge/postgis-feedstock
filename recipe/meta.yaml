@@ -22,6 +22,7 @@ requirements:
     - libtool
     - make
     - perl 5.*
+    - libpq                 # [build_platform != target_platform]
   host:
     - libxslt
     - cunit
