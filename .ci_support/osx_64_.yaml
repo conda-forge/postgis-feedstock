@@ -1,5 +1,5 @@
 MACOSX_DEPLOYMENT_TARGET:
-- '10.9'
+- '10.13'
 c_compiler:
 - clang
 c_compiler_version:
@@ -7,7 +7,7 @@ c_compiler_version:
 c_stdlib:
 - macosx_deployment_target
 c_stdlib_version:
-- '10.9'
+- '10.13'
 channel_sources:
 - conda-forge
 channel_targets:
@@ -21,7 +21,7 @@ geos:
 json_c:
 - '0.17'
 libgdal:
-- '3.8'
+- '3.9'
 libpq:
 - '16'
 macos_machine:
@@ -37,5 +37,3 @@ target_platform:
 zip_keys:
 - - c_compiler_version
   - cxx_compiler_version
-- - c_stdlib_version
-  - MACOSX_DEPLOYMENT_TARGET
