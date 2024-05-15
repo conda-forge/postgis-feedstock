@@ -23,7 +23,7 @@ geos:
 json_c:
 - '0.17'
 libgdal:
-- '3.8'
+- '3.9'
 libpq:
 - '16'
 pcre:

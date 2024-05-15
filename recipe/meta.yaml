@@ -9,12 +9,13 @@ source:
   sha256: 17aa8760a5c4fcb9a1fdc750c1c9aca0198a35dd1e320628064c43f178eefed2
 
 build:
-  number: 1
+  number: 2
   skip: true  # [win]
 
 requirements:
   build:
     - {{ compiler('c') }}
+    - {{ stdlib("c") }}
     - {{ compiler('cxx') }}
     - pkg-config
     - autoconf
