@@ -21,7 +21,7 @@ cxx_compiler_version:
 geos:
 - 3.12.2
 json_c:
-- '0.17'
+- '0.18'
 libgdal:
 - '3.9'
 libpq:
