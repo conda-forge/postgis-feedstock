@@ -23,13 +23,13 @@ requirements:
     - libtool
     - make
     - perl 5.*
-  host:
     - libxslt
+    - gettext-tools
+  host:
     - cunit
-    - libgdal
+    - libgdal-core
     - geos
-    - gettext
-    - pcre
+    - pcre2
     - proj
     - json-c
     - postgresql
