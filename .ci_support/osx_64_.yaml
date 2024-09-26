@@ -19,7 +19,7 @@ cxx_compiler:
 cxx_compiler_version:
 - '17'
 geos:
-- 3.12.2
+- 3.13.0
 json_c:
 - '0.18'
 libgdal_core:
