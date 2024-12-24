@@ -24,8 +24,12 @@ json_c:
 - '0.18'
 libgdal_core:
 - '3.10'
+liblzma_devel:
+- '5'
 libpq:
 - '17'
+libxml2:
+- '2'
 pcre2:
 - '10.44'
 postgresql:
