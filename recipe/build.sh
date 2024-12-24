@@ -26,7 +26,8 @@ export LDFLAGS="-lstdc++ $LDFLAGS"
     --with-topology \
     --disable-nls \
     --without-interrupt-tests \
-    --without-protobuf
+    --without-protobuf \
+    || (cat config.log && exit 1)
 
 make -j$CPU_COUNT
 
