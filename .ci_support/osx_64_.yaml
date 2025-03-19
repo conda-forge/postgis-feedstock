@@ -37,7 +37,7 @@ pcre2:
 postgresql:
 - '17'
 proj:
-- '9.5'
+- '9.6'
 target_platform:
 - osx-64
 zip_keys:
