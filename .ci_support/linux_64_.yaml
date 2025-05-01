@@ -29,9 +29,9 @@ liblzma_devel:
 libpq:
 - '17'
 libxml2:
-- '2'
+- '2.13'
 pcre2:
-- '10.44'
+- '10.45'
 postgresql:
 - '17'
 proj:
