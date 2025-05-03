@@ -29,11 +29,11 @@ liblzma_devel:
 libpq:
 - '17'
 libxml2:
-- '2'
+- '2.13'
 macos_machine:
 - x86_64-apple-darwin13.4.0
 pcre2:
-- '10.44'
+- '10.45'
 postgresql:
 - '17'
 proj:
