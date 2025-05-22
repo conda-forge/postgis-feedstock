@@ -23,7 +23,7 @@ geos:
 json_c:
 - '0.18'
 libgdal_core:
-- '3.10'
+- '3.11'
 liblzma_devel:
 - '5'
 libpq:
