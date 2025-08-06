@@ -8,20 +8,23 @@ REM Convert paths for MSYS2
 set "PREFIX_UNIX=%PREFIX:\=/%"
 set "LIBRARY_PREFIX_UNIX=%LIBRARY_PREFIX:\=/%"
 
+REM Set PATH to include MSYS2 tools
+set "PATH=%BUILD_PREFIX%\Library\usr\bin;%BUILD_PREFIX%\Library\bin;%BUILD_PREFIX%\Library\mingw-w64\bin;%PATH%"
+
 REM Run the build through MSYS2 bash
-bash -c "./autogen.sh"
+%BUILD_PREFIX%\Library\usr\bin\bash.exe -c "./autogen.sh"
 if errorlevel 1 exit 1
 
 REM Configure PostGIS
-bash -c "./configure --prefix=\"%LIBRARY_PREFIX_UNIX%\" --libdir=\"%LIBRARY_PREFIX_UNIX%/lib\" --includedir=\"%LIBRARY_PREFIX_UNIX%/include\" --with-pgconfig=\"%LIBRARY_PREFIX_UNIX%/bin/pg_config\" --with-geosconfig=\"%LIBRARY_PREFIX_UNIX%/bin/geos-config\" --with-gdalconfig=\"%LIBRARY_PREFIX_UNIX%/bin/gdal-config\" --with-xml2config=\"%LIBRARY_PREFIX_UNIX%/bin/xml2-config\" --with-projdir=\"%LIBRARY_PREFIX_UNIX%\" --with-libiconv-prefix=\"%LIBRARY_PREFIX_UNIX%\" --with-libintl-prefix=\"%LIBRARY_PREFIX_UNIX%\" --with-gettext --with-raster --with-topology --disable-nls --without-interrupt-tests --without-protobuf"
+%BUILD_PREFIX%\Library\usr\bin\bash.exe -c "./configure --prefix=\"%LIBRARY_PREFIX_UNIX%\" --libdir=\"%LIBRARY_PREFIX_UNIX%/lib\" --includedir=\"%LIBRARY_PREFIX_UNIX%/include\" --with-pgconfig=\"%LIBRARY_PREFIX_UNIX%/bin/pg_config\" --with-geosconfig=\"%LIBRARY_PREFIX_UNIX%/bin/geos-config\" --with-gdalconfig=\"%LIBRARY_PREFIX_UNIX%/bin/gdal-config\" --with-xml2config=\"%LIBRARY_PREFIX_UNIX%/bin/xml2-config\" --with-projdir=\"%LIBRARY_PREFIX_UNIX%\" --with-libiconv-prefix=\"%LIBRARY_PREFIX_UNIX%\" --with-libintl-prefix=\"%LIBRARY_PREFIX_UNIX%\" --with-gettext --with-raster --with-topology --disable-nls --without-interrupt-tests --without-protobuf"
 if errorlevel 1 exit 1
 
 REM Build PostGIS
-bash -c "make -j%CPU_COUNT%"
+%BUILD_PREFIX%\Library\usr\bin\bash.exe -c "make -j%CPU_COUNT%"
 if errorlevel 1 exit 1
 
 REM Install PostGIS
-bash -c "make install"
+%BUILD_PREFIX%\Library\usr\bin\bash.exe -c "make install"
 if errorlevel 1 exit 1
 
 REM Copy PostGIS extensions to PostgreSQL share directory
