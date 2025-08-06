@@ -10,18 +10,22 @@ source:
 
 build:
   number: 1
-  skip: true  # [win]
 
 requirements:
   build:
     - {{ compiler('c') }}
     - {{ stdlib("c") }}
     - {{ compiler('cxx') }}
-    - pkg-config
-    - autoconf
-    - automake
-    - libtool
-    - make
+    - pkg-config      # [not win]
+    - autoconf        # [not win]
+    - automake        # [not win]
+    - libtool         # [not win]
+    - make            # [not win]
+    - m2-bash         # [win]
+    - m2-make         # [win]
+    - m2-autoconf     # [win]
+    - m2-automake-wrapper  # [win]
+    - m2-libtool      # [win]
     - perl 5.*
     - libxslt
     - gettext-tools
