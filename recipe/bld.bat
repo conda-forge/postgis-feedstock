@@ -8,6 +8,10 @@ REM Convert paths for MSYS2
 set "PREFIX_UNIX=%PREFIX:\=/%"
 set "LIBRARY_PREFIX_UNIX=%LIBRARY_PREFIX:\=/%"
 
+REM Change to PostGIS source directory
+cd postgis-%PKG_VERSION%
+if errorlevel 1 exit 1
+
 REM Use MSYS2 bash from the build environment
 bash -lc "./autogen.sh"
 if errorlevel 1 exit 1
