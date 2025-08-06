@@ -14,7 +14,7 @@ build:
 requirements:
   build:
     - {{ compiler('c') }}
-    - {{ stdlib("c") }}
+    - {{ stdlib("c") }}  # [not win]
     - {{ compiler('cxx') }}
     - pkg-config      # [not win]
     - autoconf        # [not win]
@@ -28,14 +28,14 @@ requirements:
     - m2-libtool      # [win]
     - perl 5.*
     - libxslt
-    - gettext-tools
+    - gettext-tools  # [not win]
   host:
     - cunit
     - libgdal-core
     - geos
     - pcre2
     - proj
-    - json-c
+    - json-c  # [not win]
     - postgresql
     - libpq
     - libxml2
