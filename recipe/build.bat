@@ -32,6 +32,14 @@ REM Copy PostGIS libraries to PostgreSQL lib directory
 xcopy /E /Y "%LIBRARY_LIB%\postgis*.dll" "%PREFIX%\lib\"
 if errorlevel 1 exit 1
 
+REM Copy PostGIS executables to bin directory
+xcopy /Y "%LIBRARY_BIN%\shp2pgsql.exe" "%PREFIX%\Scripts\"
+if errorlevel 1 exit 1
+xcopy /Y "%LIBRARY_BIN%\pgsql2shp.exe" "%PREFIX%\Scripts\"
+if errorlevel 1 exit 1
+xcopy /Y "%LIBRARY_BIN%\raster2pgsql.exe" "%PREFIX%\Scripts\"
+if errorlevel 1 exit 1
+
 REM Create activation scripts
 set ACTIVATE_DIR=%PREFIX%\etc\conda\activate.d
 set DEACTIVATE_DIR=%PREFIX%\etc\conda\deactivate.d
