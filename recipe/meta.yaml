@@ -39,7 +39,8 @@ requirements:
     - postgresql
     - libpq
     - libxml2
-    - liblzma-devel
+    - m2-liblzma  # [win]
+    - liblzma-devel  # [not win]
   run:
     - postgresql
 
