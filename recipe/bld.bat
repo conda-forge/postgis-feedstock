@@ -8,18 +8,8 @@ REM Convert paths for MSYS2
 set "PREFIX_UNIX=%PREFIX:\=/%"
 set "LIBRARY_PREFIX_UNIX=%LIBRARY_PREFIX:\=/%"
 
-REM List directory contents to debug
-dir /B
-
-REM Check for PostGIS source directory and change to it
-if exist "postgis-%PKG_VERSION%" (
-    cd postgis-%PKG_VERSION%
-) else if exist "postgis" (
-    cd postgis
-) else (
-    echo PostGIS source directory not found!
-    exit 1
-)
+REM PostGIS source is extracted directly to the work directory
+REM No need to change directories
 
 REM Use MSYS2 bash from the build environment
 bash -lc "./autogen.sh"
