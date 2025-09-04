@@ -1,0 +1,30 @@
+c_compiler:
+- vs2022
+c_stdlib:
+- vs
+channel_sources:
+- conda-forge
+channel_targets:
+- conda-forge main
+cxx_compiler:
+- vs2022
+geos:
+- 3.13.1
+json_c:
+- '0.18'
+libgdal_core:
+- '3.11'
+liblzma_devel:
+- '5'
+libpq:
+- '17'
+libxml2:
+- '2.13'
+pcre2:
+- '10.45'
+postgresql:
+- '17'
+proj:
+- '9.6'
+target_platform:
+- win-64
