@@ -27,7 +27,7 @@ libgdal_core:
 liblzma_devel:
 - '5'
 libpq:
-- '17'
+- '18'
 libxml2_devel:
 - '2.14'
 macos_machine:
@@ -35,7 +35,7 @@ macos_machine:
 pcre2:
 - '10.46'
 postgresql:
-- '17'
+- '18'
 proj:
 - '9.7'
 target_platform:
