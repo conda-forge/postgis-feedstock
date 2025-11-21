@@ -33,7 +33,7 @@ libxml2_devel:
 macos_machine:
 - x86_64-apple-darwin13.4.0
 pcre2:
-- '10.46'
+- '10.47'
 postgresql:
 - '18'
 proj:

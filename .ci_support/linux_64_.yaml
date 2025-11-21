@@ -29,7 +29,7 @@ libpq:
 libxml2_devel:
 - '2.14'
 pcre2:
-- '10.46'
+- '10.47'
 postgresql:
 - '18'
 proj:
