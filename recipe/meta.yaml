@@ -9,7 +9,7 @@ source:
   sha256: 849391e75488a749663fbc8d63b846d063d387d286c04dea062820476f84c8f6
 
 build:
-  number: 0
+  number: 1
   skip: true  # [win]
 
 requirements:
@@ -33,6 +33,7 @@ requirements:
     - proj
     - json-c
     - postgresql
+    - libiconv
     - libpq
     - libxml2-devel
     - liblzma-devel

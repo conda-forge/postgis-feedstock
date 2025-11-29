@@ -11,6 +11,14 @@ export CPPBIN="${CPP}"
 # see note at https://postgis.net/docs/manual-3.2/postgis_installation.html#PGInstall
 export LDFLAGS="-lstdc++ $LDFLAGS"
 
+# Work around macOS PGXS injecting unsupported '-fuse-ld=lld' into link flags
+if [[ "${target_platform}" == osx-* ]]; then
+    pgxs_makefile="${PREFIX}/lib/pgxs/src/Makefile.global"
+    if [[ -f "${pgxs_makefile}" ]]; then
+        sed -i.bak 's/ -fuse-ld=lld//g' "${pgxs_makefile}"
+    fi
+fi
+
 ./configure \
     --prefix=${PREFIX} \
     --libdir=${PREFIX}/lib \
