@@ -1,4 +1,4 @@
-{% set version = "3.6.1" %}
+{% set version = "3.4.2" %}
 
 package:
   name: postgis
@@ -6,7 +6,7 @@ package:
 
 source:
   url: https://github.com/postgis/postgis/archive/{{ version }}.tar.gz
-  sha256: 849391e75488a749663fbc8d63b846d063d387d286c04dea062820476f84c8f6
+  sha256: 17aa8760a5c4fcb9a1fdc750c1c9aca0198a35dd1e320628064c43f178eefed2
 
 build:
   number: 1
@@ -15,7 +15,6 @@ build:
 requirements:
   build:
     - {{ compiler('c') }}
-    - {{ stdlib("c") }}
     - {{ compiler('cxx') }}
     - pkg-config
     - autoconf
@@ -23,22 +22,18 @@ requirements:
     - libtool
     - make
     - perl 5.*
-    - libxslt
-    - gettext-tools
+    - libpq                 # [build_platform != target_platform]
   host:
+    - libxslt
     - cunit
-    - libgdal-core
+    - libgdal
     - geos
-    - pcre2
+    - gettext
+    - pcre
     - proj
     - json-c
     - postgresql
-    - libiconv
     - libpq
-    - libxml2-devel
-    - liblzma-devel
-  run:
-    - postgresql
 
 test:
   files:

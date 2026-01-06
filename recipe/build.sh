@@ -11,12 +11,11 @@ export CPPBIN="${CPP}"
 # see note at https://postgis.net/docs/manual-3.2/postgis_installation.html#PGInstall
 export LDFLAGS="-lstdc++ $LDFLAGS"
 
-# Work around macOS PGXS injecting unsupported '-fuse-ld=lld' into link flags
-if [[ "${target_platform}" == osx-* ]]; then
-    pgxs_makefile="${PREFIX}/lib/pgxs/src/Makefile.global"
-    if [[ -f "${pgxs_makefile}" ]]; then
-        sed -i.bak 's/ -fuse-ld=lld//g' "${pgxs_makefile}"
-    fi
+
+if [[ "${CONDA_BUILD_CROSS_COMPILATION:-}" == "1" ]]; then
+    export PG_CONFIG=${BUILD_PREFIX}/bin/pg_config
+else
+    export PG_CONFIG=${PREFIX}/bin/pg_config
 fi
 
 ./configure \
@@ -24,7 +23,7 @@ fi
     --libdir=${PREFIX}/lib \
     --includedir=${PREFIX}/include \
     --with-geosconfig=$PREFIX/bin/geos-config \
-    --with-pgconfig=${PREFIX}/bin/pg_config \
+    --with-pgconfig=${PG_CONFIG} \
     --with-gdalconfig=${PREFIX}/bin/gdal-config \
     --with-xml2config=${PREFIX}/bin/xml2-config \
     --with-libiconv-prefix=${PREFIX} \
@@ -34,8 +33,7 @@ fi
     --with-topology \
     --disable-nls \
     --without-interrupt-tests \
-    --without-protobuf \
-    || (cat config.log && exit 1)
+    --without-protobuf
 
 make -j$CPU_COUNT
 
