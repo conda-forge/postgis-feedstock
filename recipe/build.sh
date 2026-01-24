@@ -21,6 +21,10 @@ fi
 
 if [[ "${CONDA_BUILD_CROSS_COMPILATION:-}" == "1" ]]; then
     export PG_CONFIG=${BUILD_PREFIX}/bin/pg_config
+    # Override library paths for cross-compilation
+    # pg_config from BUILD_PREFIX returns x86_64 paths, but we need arm64 libraries
+    export LDFLAGS="${LDFLAGS} -L${PREFIX}/lib"
+    export CPPFLAGS="${CPPFLAGS} -I${PREFIX}/include"
 else
     export PG_CONFIG=${PREFIX}/bin/pg_config
 fi
