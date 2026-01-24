@@ -30,6 +30,8 @@ liblzma_devel:
 - '5'
 libpq:
 - '18'
+libxml2_devel:
+- '2.14'
 macos_machine:
 - x86_64-apple-darwin13.4.0
 pcre2:
