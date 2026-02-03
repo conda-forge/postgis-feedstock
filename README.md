@@ -3,7 +3,7 @@ About postgis-feedstock
 
 Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/postgis-feedstock/blob/main/LICENSE.txt)
 
-Home: http://postgis.net
+Home: http://postgis.net/
 
 Package license: GPL-2.0-or-later
 
@@ -16,7 +16,6 @@ Documentation: http://postgis.net/documentation/
 PostGIS is a spatial database extender for PostgreSQL object-relational
 database. It adds support for geographic objects allowing location
 queries to be run in SQL.
-
 
 Current build status
 ====================
