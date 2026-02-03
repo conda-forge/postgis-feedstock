@@ -19,12 +19,24 @@ if [[ "${target_platform}" == osx-* ]]; then
     fi
 fi
 
+pg_config_path="${PREFIX}/bin/pg_config"
+
+if [[ "${CONDA_BUILD_CROSS_COMPILATION:-0}" == "1" ]] || [[ -n "${build_platform:-}" && -n "${target_platform:-}" && "${build_platform}" != "${target_platform}" ]]; then
+    pg_config_wrapper="${SRC_DIR:-$PWD}/pg_config.wrapper"
+    pgxs_makefile="${PREFIX}/lib/pgxs/src/Makefile.global"
+
+    cp ${RECIPE_DIR}/pg_config.wrapper "${pg_config_wrapper}"
+
+    chmod +x "${pg_config_wrapper}"
+    pg_config_path="${pg_config_wrapper}"
+fi
+
 ./configure \
     --prefix=${PREFIX} \
     --libdir=${PREFIX}/lib \
     --includedir=${PREFIX}/include \
     --with-geosconfig=$PREFIX/bin/geos-config \
-    --with-pgconfig=${PREFIX}/bin/pg_config \
+    --with-pgconfig=${pg_config_path} \
     --with-gdalconfig=${PREFIX}/bin/gdal-config \
     --with-xml2config=${PREFIX}/bin/xml2-config \
     --with-libiconv-prefix=${PREFIX} \
