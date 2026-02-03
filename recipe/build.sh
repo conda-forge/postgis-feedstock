@@ -19,22 +19,12 @@ if [[ "${target_platform}" == osx-* ]]; then
     fi
 fi
 
-if [[ "${CONDA_BUILD_CROSS_COMPILATION:-}" == "1" ]]; then
-    export PG_CONFIG=${BUILD_PREFIX}/bin/pg_config
-    # Override library paths for cross-compilation
-    # pg_config from BUILD_PREFIX returns x86_64 paths, but we need arm64 libraries
-    export LDFLAGS="${LDFLAGS} -L${PREFIX}/lib"
-    export CPPFLAGS="${CPPFLAGS} -I${PREFIX}/include"
-else
-    export PG_CONFIG=${PREFIX}/bin/pg_config
-fi
-
 ./configure \
     --prefix=${PREFIX} \
     --libdir=${PREFIX}/lib \
     --includedir=${PREFIX}/include \
     --with-geosconfig=$PREFIX/bin/geos-config \
-    --with-pgconfig=${PG_CONFIG} \
+    --with-pgconfig=${PREFIX}/bin/pg_config \
     --with-gdalconfig=${PREFIX}/bin/gdal-config \
     --with-xml2config=${PREFIX}/bin/xml2-config \
     --with-libiconv-prefix=${PREFIX} \
@@ -44,7 +34,8 @@ fi
     --with-topology \
     --disable-nls \
     --without-interrupt-tests \
-    --without-protobuf
+    --without-protobuf \
+    || (cat config.log && exit 1)
 
 make -j$CPU_COUNT
 
