@@ -29,6 +29,7 @@ requirements:
     - perl 5.*
     - libxslt
     - gettext-tools
+    - postgresql
   host:
     - cunit
     - libgdal-core
