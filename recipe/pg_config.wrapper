@@ -1,10 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-pgxs_makefile="${pgxs_makefile:-}"
-if [[ -z "${pgxs_makefile}" && -n "${SRC_DIR:-}" && -f "${SRC_DIR}/pgxs/Makefile.global" ]]; then
-    pgxs_makefile="${SRC_DIR}/pgxs/Makefile.global"
-fi
 pgxs_makefile="${pgxs_makefile:-${PREFIX}/lib/pgxs/src/Makefile.global}"
 
 get_mkvar() {

@@ -29,6 +29,30 @@ if [[ "${CONDA_BUILD_CROSS_COMPILATION:-0}" == "1" ]] || [[ -n "${build_platform
 
     chmod +x "${pg_config_wrapper}"
     pg_config_path="${pg_config_wrapper}"
+
+    if [[ ! -f "${pgxs_makefile}" ]]; then
+        echo "PGXS Makefile not found at ${pgxs_makefile}" >&2
+        exit 1
+    fi
+
+    pgxs_global="${pgxs_makefile}"
+    pgxs_mk="${PREFIX}/lib/pgxs/src/makefiles/pgxs.mk"
+
+    awk '
+        $0 ~ /^-?include[[:space:]].*Makefile\.port/ { next }
+        { print }
+        END { print "include ${PREFIX}/lib/pgxs/src/Makefile.port" }
+    ' "${pgxs_global}" > "${pgxs_global}.tmp"
+    mv "${pgxs_global}.tmp" "${pgxs_global}"
+
+    echo "==== PGXS Makefile.global (start) ===="
+    sed -n '1,140p' "${pgxs_global}"
+    echo "==== PGXS Makefile.global (end) ===="
+    if [[ -f "${pgxs_mk}" ]]; then
+        echo "==== pgxs.mk (start) ===="
+        sed -n '1,140p' "${pgxs_mk}"
+        echo "==== pgxs.mk (end) ===="
+    fi
 fi
 
 ./configure \
@@ -48,6 +72,9 @@ fi
     --without-interrupt-tests \
     --without-protobuf \
     || (cat config.log && exit 1)
+
+# Ensure upgrade SQL exists for utils/postgis_restore_data.generated
+make -C postgis postgis_upgrade.sql
 
 make -j$CPU_COUNT
 
