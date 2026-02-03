@@ -1,0 +1,74 @@
+schema_version: 1
+
+context:
+  version: 3.6.1
+
+package:
+  name: postgis
+  version: ${{ version }}
+
+source:
+  url: https://github.com/postgis/postgis/archive/${{ version }}.tar.gz
+  sha256: 849391e75488a749663fbc8d63b846d063d387d286c04dea062820476f84c8f6
+
+build:
+  number: 1
+  skip:
+    - win
+
+requirements:
+  build:
+    - ${{ compiler('c') }}
+    - ${{ stdlib("c") }}
+    - ${{ compiler('cxx') }}
+    - pkg-config
+    - autoconf
+    - automake
+    - libtool
+    - make
+    - perl 5.*
+    - libxslt
+    - gettext-tools
+  host:
+    - cunit
+    - libgdal-core
+    - geos
+    - pcre2
+    - proj
+    - json-c
+    - postgresql
+    - libiconv
+    - libpq
+    - libxml2-devel
+    - liblzma-devel
+  run:
+    - postgresql
+
+tests:
+  - files:
+      recipe:
+        - test_data
+    script:
+      - shp2pgsql test_data/test.shp
+      - pgsql2shp
+      - raster2pgsql
+
+about:
+  license: GPL-2.0-or-later
+  license_file: LICENSE.TXT
+  summary: PostGIS adds geometry, geography, raster and other types to the PostgreSQL database.
+  description: |
+    PostGIS is a spatial database extender for PostgreSQL object-relational
+    database. It adds support for geographic objects allowing location
+    queries to be run in SQL.
+  homepage: http://postgis.net
+  repository: https://git.osgeo.org/gitea/postgis/postgis
+  documentation: http://postgis.net/documentation/
+
+extra:
+  recipe-maintainers:
+    - sodre
+    - dwnoble
+    - xylar
+    - mxr-conda
+
