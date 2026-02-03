@@ -5,7 +5,7 @@
 
 [workspace]
 name = "postgis-feedstock"
-version = "3.54.1"  # conda-smithy version used to generate this file
+version = "3.54.2"  # conda-smithy version used to generate this file
 description = "Pixi configuration for conda-forge/postgis-feedstock"
 authors = ["@conda-forge/postgis"]
 channels = ["conda-forge"]
@@ -35,6 +35,12 @@ description = "Build postgis-feedstock with variant osx_64_ directly (without se
 [tasks."inspect-osx_64_"]
 cmd = "inspect_artifacts --recipe-dir recipe -m .ci_support/osx_64_.yaml"
 description = "List contents of postgis-feedstock packages built for variant osx_64_"
+[tasks."build-osx_arm64_"]
+cmd = "rattler-build build --recipe recipe -m .ci_support/osx_arm64_.yaml"
+description = "Build postgis-feedstock with variant osx_arm64_ directly (without setup scripts)"
+[tasks."inspect-osx_arm64_"]
+cmd = "inspect_artifacts --recipe-dir recipe -m .ci_support/osx_arm64_.yaml"
+description = "List contents of postgis-feedstock packages built for variant osx_arm64_"
 
 [feature.smithy.dependencies]
 conda-smithy = "*"

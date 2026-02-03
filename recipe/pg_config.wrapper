@@ -1,0 +1,122 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+pgxs_makefile="${pgxs_makefile:-${PREFIX}/lib/pgxs/src/Makefile.global}"
+
+get_mkvar() {
+    local var="$1"
+    if [[ -f "${pgxs_makefile}" ]]; then
+        local val
+        val=$(sed -n "s/^${var} = //p" "${pgxs_makefile}" | head -n 1)
+        # Avoid returning unexpanded Makefile variables like $(includedir)/server
+        if [[ -n "${val}" && "${val}" != *'$('* ]]; then
+            printf '%s\n' "${val}"
+            return 0
+        fi
+    fi
+
+    case "${var}" in
+        libdir|pkglibdir)
+            printf '%s\n' "${PREFIX}/lib"
+            ;;
+        sharedir)
+            printf '%s\n' "${PREFIX}/share/postgresql"
+            ;;
+        includedir)
+            printf '%s\n' "${PREFIX}/include"
+            ;;
+        includedir_server)
+            printf '%s\n' "${PREFIX}/include/server"
+            ;;
+        docdir)
+            printf '%s\n' "${PREFIX}/share/doc/postgresql"
+            ;;
+        mandir)
+            printf '%s\n' "${PREFIX}/share/man"
+            ;;
+        localedir)
+            printf '%s\n' "${PREFIX}/share/locale"
+            ;;
+        sysconfdir)
+            printf '%s\n' "${PREFIX}/etc"
+            ;;
+        pkgincludedir)
+            printf '%s\n' "${PREFIX}/include"
+            ;;
+        bindir)
+            printf '%s\n' "${PREFIX}/bin"
+            ;;
+        *)
+            return 1
+            ;;
+    esac
+}
+
+get_pg_version() {
+    local header="${PREFIX}/include/pg_config.h"
+    if [[ -f "${header}" ]]; then
+        local ver
+        ver=$(grep -E '^#define PG_VERSION "' "${header}" | sed 's/^#define PG_VERSION "\(.*\)"/\1/')
+        if [[ -n "${ver}" ]]; then
+            printf 'PostgreSQL %s\n' "${ver}"
+            return 0
+        fi
+    fi
+    printf 'PostgreSQL 0.0\n'
+}
+
+case "${1:-}" in
+    --pgxs)
+        if [[ -f "${PREFIX}/lib/pgxs/src/makefiles/pgxs.mk" ]]; then
+            printf '%s\n' "${PREFIX}/lib/pgxs/src/makefiles/pgxs.mk"
+        else
+            printf '%s\n' "${pgxs_makefile}"
+        fi
+        ;;
+    --version)
+        get_pg_version
+        ;;
+    --libdir)
+        get_mkvar libdir
+        ;;
+    --pkglibdir)
+        get_mkvar pkglibdir
+        ;;
+    --sharedir)
+        get_mkvar sharedir
+        ;;
+    --includedir)
+        get_mkvar includedir
+        ;;
+    --includedir-server)
+        get_mkvar includedir_server
+        ;;
+    --docdir)
+        get_mkvar docdir
+        ;;
+    --mandir)
+        get_mkvar mandir
+        ;;
+    --localedir)
+        get_mkvar localedir
+        ;;
+    --sysconfdir)
+        get_mkvar sysconfdir
+        ;;
+    --pkgincludedir)
+        get_mkvar pkgincludedir
+        ;;
+    --bindir)
+        get_mkvar bindir
+        ;;
+    --cc)
+        printf '%s\n' "${CC:-cc}"
+        ;;
+    --cflags)
+        printf '%s\n' "${CFLAGS:-}"
+        ;;
+    *)
+        printf 'pg_config wrapper: unsupported option %s\n' "${1:-}" >&2
+        exit 1
+        ;;
+esac
