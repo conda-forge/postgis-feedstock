@@ -9,3 +9,6 @@ github:
   branch_name: main
   tooling_branch_name: main
 test: native_and_emulated
+
+provider:
+  win_64: azure
