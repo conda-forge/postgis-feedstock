@@ -1,7 +1,7 @@
 schema_version: 1
 
 context:
-  version: 3.6.1
+  version: "3.6.2"
 
 package:
   name: postgis
@@ -9,7 +9,7 @@ package:
 
 source:
   url: https://github.com/postgis/postgis/archive/${{ version }}.tar.gz
-  sha256: 849391e75488a749663fbc8d63b846d063d387d286c04dea062820476f84c8f6
+  sha256: 607a4d21c017e5283e15d2d977c9b7f575ddfc672afdee81fc84a2d823db4ba5
 
 build:
   number: 1
@@ -20,7 +20,8 @@ requirements:
       then: autotools_clang_conda
     - if: not win
       then:
-        - ${{ compiler('c') }}
+        - ${{ compiler('c') }}        
+        - ${{ stdlib("c") }}
         - ${{ compiler('cxx') }}
         - autoconf
         - automake
