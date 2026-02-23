@@ -105,6 +105,11 @@ COMPATEOF
     export CPPFLAGS="${WIN_COMPAT_DEFS} ${CPPFLAGS}"
 fi
 
+
+# OSX seems to be having trouble finding stdc++
+# see note at https://postgis.net/docs/manual-3.2/postgis_installation.html#PGInstall
+export LDFLAGS="-lstdc++ $LDFLAGS"
+
 # Work around macOS PGXS injecting unsupported '-fuse-ld=lld' into link flags
 if [[ "${target_platform}" == osx-* ]]; then
     pgxs_makefile="${PREFIX}/lib/pgxs/src/Makefile.global"
@@ -215,7 +220,7 @@ if [[ "${CONDA_BUILD_CROSS_COMPILATION:-0}" == "1" ]] || [[ -n "${build_platform
     cp ${RECIPE_DIR}/pg_config.wrapper "${pg_config_wrapper}"
 
     chmod +x "${pg_config_wrapper}"
-    pg_config_path="${pg_config_wrapper}"
+    PG_CONFIG_OPT="--with-pgconfig=${pg_config_wrapper}"
 
     if [[ ! -f "${pgxs_makefile}" ]]; then
         echo "PGXS Makefile not found at ${pgxs_makefile}" >&2
