@@ -205,7 +205,8 @@ if [[ "${target_platform}" == win-* ]]; then
             s| /STACK:\d+||g;
             s| /NOEXP||g;
         ' "${pgxs_makefile}"
-pg_config_path="${PREFIX}/bin/pg_config"
+    fi
+fi
 
 if [[ "${CONDA_BUILD_CROSS_COMPILATION:-0}" == "1" ]] || [[ -n "${build_platform:-}" && -n "${target_platform:-}" && "${build_platform}" != "${target_platform}" ]]; then
     pg_config_wrapper="${SRC_DIR:-$PWD}/pg_config.wrapper"
