@@ -3,13 +3,107 @@ set -e
 
 . ${RECIPE_DIR}/pg.sh
 
-export CPPBIN="${CPP}"
+if [[ "${target_platform}" == win-* ]]; then
+    # Create a cpp wrapper so configure's AC_PATH_PROG([CPPBIN], [cpp]) can find it.
+    # Use -xc to force C mode (so .sql.in files are preprocessed) and -nostdinc to
+    # avoid injecting MSVC system headers into SQL preprocessing.
+    cat > ${SRC_DIR}/cpp <<'CPPEOF'
+#!/bin/bash
+exec clang.exe -E -xc -nostdinc "$@"
+CPPEOF
+    chmod +x ${SRC_DIR}/cpp
+    export PATH="${SRC_DIR}:${PATH}"
+else
+    export CPPBIN="${CPP}"
+fi
+
+# On Windows, set PKG_CONFIG_PATH so pkg-config can find .pc files in the host prefix
+if [[ "${target_platform}" == win-* ]]; then
+    export PKG_CONFIG_PATH="${PREFIX}/lib/pkgconfig:${PKG_CONFIG_PATH}"
+fi
+
+# On Windows with clang 21+, using a function as a function pointer (via
+# DirectFunctionCall) before PG_FUNCTION_INFO_V1 redeclares it with dllexport
+# is a hard error. Many postgis source files have bare forward declarations
+# like "Datum foo(PG_FUNCTION_ARGS);" without PGDLLEXPORT. Fix all of them
+# so they're consistent with PG_FUNCTION_INFO_V1's dllexport attribute.
+if [[ "${target_platform}" == win-* ]]; then
+    find postgis -name '*.c' -o -name '*.h' | xargs \
+        perl -i -pe 's/^Datum (\w+\(PG_FUNCTION_ARGS\);)$/extern PGDLLEXPORT Datum $1/'
+    # PostGIS defines several functions as 'inline' in .c files but calls them
+    # from other translation units. At -O2, clang inlines the body and elides
+    # the external symbol, causing link errors. Remove 'inline' so external
+    # definitions are always emitted.
+    find . -name '*.c' | xargs \
+        perl -i -pe 's/^inline ((?:bool|void|int|float|double|static|unsigned|char|size_t|const|struct) )/$1/; s/^inline (\w)/$1/'
+fi
 
 ./autogen.sh
 
 # OSX seems to be having trouble finding stdc++
 # see note at https://postgis.net/docs/manual-3.2/postgis_installation.html#PGInstall
-export LDFLAGS="-lstdc++ $LDFLAGS"
+if [[ "${target_platform}" != win-* ]]; then
+    export LDFLAGS="-lstdc++ $LDFLAGS"
+fi
+
+# On Windows with MSVC/lld-link, there is no separate libm; math functions
+# are in the C runtime. Create an empty stub so that -lm succeeds.
+if [[ "${target_platform}" == win-* ]]; then
+    touch empty.c
+    clang.exe -c empty.c -o empty.o
+    llvm-lib empty.o -out:${PREFIX}/lib/m.lib
+    # stdc++ doesn't exist on MSVC (C++ runtime is in msvcrt).
+    # pgcommon/pgport are PostgreSQL internal libs whose symbols are already
+    # in postgres.lib. Create empty stubs so -l flags succeed.
+    llvm-lib empty.o -out:${PREFIX}/lib/stdc++.lib
+    llvm-lib empty.o -out:${PREFIX}/lib/pgcommon.lib
+    llvm-lib empty.o -out:${PREFIX}/lib/pgport.lib
+
+    # M_PI and friends are not defined by default on MSVC.
+    # strcasecmp/strncasecmp are POSIX, on MSVC they're _stricmp/_strnicmp.
+    # __GNUC__ makes PostgreSQL use GCC-style atomics (which clang supports)
+    # instead of MSVC atomics that pull in <intrin.h> with broken MMX types.
+    # Include PostgreSQL's MSVC compat headers (provides dirent.h, etc.)
+    WIN_COMPAT_DEFS="-D_USE_MATH_DEFINES -Dstrcasecmp=_stricmp -Dstrncasecmp=_strnicmp -Dstricmp=_stricmp -Dstrnicmp=_strnicmp -Dstrdup=_strdup -Dgetpid=_getpid -Dgetcwd=_getcwd -DYY_NO_UNISTD_H -I${PREFIX}/include/server/port/win32_msvc"
+
+    # Provide vasprintf/asprintf implementations for MSVC (POSIX, not available natively)
+    cat > ${SRC_DIR}/win_compat.h << 'COMPATEOF'
+#ifndef WIN_COMPAT_H
+#define WIN_COMPAT_H
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdarg.h>
+#include <process.h>  /* for _getpid, _spawnv */
+#include <io.h>       /* for _setmode etc. */
+#include <direct.h>   /* for _getcwd */
+static inline int vasprintf(char **strp, const char *fmt, va_list ap) {
+    va_list ap2;
+    va_copy(ap2, ap);
+    int len = _vscprintf(fmt, ap2);
+    va_end(ap2);
+    if (len < 0) return -1;
+    *strp = (char *)malloc(len + 1);
+    if (!*strp) return -1;
+    return vsprintf(*strp, fmt, ap);
+}
+static inline int asprintf(char **strp, const char *fmt, ...) {
+    va_list ap;
+    va_start(ap, fmt);
+    int ret = vasprintf(strp, fmt, ap);
+    va_end(ap);
+    return ret;
+}
+#endif
+COMPATEOF
+    WIN_COMPAT_DEFS="${WIN_COMPAT_DEFS} -include ${SRC_DIR}/win_compat.h"
+    # __GNUC__ makes PostgreSQL use GCC-style atomics (which clang supports)
+    # instead of MSVC atomics that pull in <intrin.h> with broken MMX types.
+    # Only set for C (not C++) to avoid conflicts with MSVC C++ STL headers.
+    export CFLAGS="${WIN_COMPAT_DEFS} -D__GNUC__=4 ${CFLAGS}"
+    # MSVC C++ STL headers require C++14 or later
+    export CXXFLAGS="${WIN_COMPAT_DEFS} -std=c++17 ${CXXFLAGS}"
+    export CPPFLAGS="${WIN_COMPAT_DEFS} ${CPPFLAGS}"
+fi
 
 # Work around macOS PGXS injecting unsupported '-fuse-ld=lld' into link flags
 if [[ "${target_platform}" == osx-* ]]; then
@@ -19,13 +113,108 @@ if [[ "${target_platform}" == osx-* ]]; then
     fi
 fi
 
+# On Windows, pg_config --cc returns cl.exe and --cflags returns MSVC flags,
+# but we're building with clang via autotools_clang_conda. Create a wrapper
+# pg_config that overrides --cc and --cflags to use our clang compiler.
+if [[ "${target_platform}" == win-* ]]; then
+    PG_CONFIG_REAL=${PREFIX}/bin/pg_config
+    PG_CONFIG_WRAPPER=${SRC_DIR}/pg_config_wrapper.sh
+    cat > ${PG_CONFIG_WRAPPER} <<'PGEOF'
+#!/bin/bash
+case "$1" in
+    --cc)  echo "clang.exe" ;;
+    --cflags) echo "$CFLAGS" ;;
+    --ldflags) echo "$LDFLAGS" ;;
+    *) exec "$PG_CONFIG_REAL" "$@" ;;
+esac
+PGEOF
+    chmod +x ${PG_CONFIG_WRAPPER}
+    # Export so the wrapper's inner exec can find the real pg_config
+    export PG_CONFIG_REAL
+    PG_CONFIG_OPT="--with-pgconfig=${PG_CONFIG_WRAPPER}"
+else
+    PG_CONFIG_OPT="--with-pgconfig=${PREFIX}/bin/pg_config"
+fi
+
+CONFIGURE_EXTRA_ARGS=""
+if [[ "${target_platform}" == win-* ]]; then
+    # Specify PROJ directory directly to avoid pkg-config dependency chain issues
+    CONFIGURE_EXTRA_ARGS="--with-projdir=${PREFIX}"
+
+    # gdal-config was generated for MSVC (uses -LIBPATH: and bare lib names).
+    # Create a wrapper that translates output to clang/lld-link compatible flags.
+    GDAL_CONFIG_REAL=${PREFIX}/bin/gdal-config.real
+    cp ${PREFIX}/bin/gdal-config ${GDAL_CONFIG_REAL}
+    # Fix the nested quotes issue in the real script so it can be sourced
+    perl -i -pe '
+        if (/^(CONFIG_DEP_LIBS|CONFIG_LIBS)=/) {
+            s/^([^=]+=)//;
+            my $key = $1;
+            s/"//g;
+            chomp;
+            $_ = "${key}\"${_}\"\n";
+        }
+    ' ${GDAL_CONFIG_REAL}
+
+    GDAL_CONFIG_WRAPPER=${SRC_DIR}/gdal_config_wrapper.sh
+    cat > ${GDAL_CONFIG_WRAPPER} <<'GDALEOF'
+#!/bin/bash
+case "$1" in
+    --libs)
+        echo "-L${PREFIX}/lib -lgdal"
+        ;;
+    --dep-libs)
+        echo ""
+        ;;
+    --ogr-enabled)
+        echo "yes"
+        ;;
+    *)
+        exec bash "$GDAL_CONFIG_REAL" "$@"
+        ;;
+esac
+GDALEOF
+    chmod +x ${GDAL_CONFIG_WRAPPER}
+    export GDAL_CONFIG_REAL
+    GDAL_CONFIG_OPT="--with-gdalconfig=${GDAL_CONFIG_WRAPPER}"
+fi
+
+if [[ "${target_platform}" != win-* ]]; then
+    GDAL_CONFIG_OPT="--with-gdalconfig=${PREFIX}/bin/gdal-config"
+fi
+
+# On Windows, patch PGXS Makefile.global to use clang instead of cl.exe
+# and remove MSVC-specific compiler flags
+if [[ "${target_platform}" == win-* ]]; then
+    pgxs_makefile="${PREFIX}/lib/pgxs/src/Makefile.global"
+    if [[ -f "${pgxs_makefile}" ]]; then
+        # Replace cl.exe with clang.exe and convert MSVC-style flags to clang
+        perl -i.bak -pe '
+            s/^CC = cl\.exe/CC = clang.exe/;
+            s/^CFLAGS_SL =.*/CFLAGS_SL =/;
+            # Remove MSVC-specific flags
+            s| /wd\d+||g;
+            s| /MD||g;
+            s| /nologo||g;
+            # Convert /D defines to -D
+            s| /D(\S+)| -D$1|g;
+            # Convert /I includes to -I
+            s| /I(\S+)| -I$1|g;
+            # Remove MSVC link flags
+            s| /INCREMENTAL:NO||g;
+            s| /STACK:\d+||g;
+            s| /NOEXP||g;
+        ' "${pgxs_makefile}"
+    fi
+fi
+
 ./configure \
     --prefix=${PREFIX} \
     --libdir=${PREFIX}/lib \
     --includedir=${PREFIX}/include \
     --with-geosconfig=$PREFIX/bin/geos-config \
-    --with-pgconfig=${PREFIX}/bin/pg_config \
-    --with-gdalconfig=${PREFIX}/bin/gdal-config \
+    ${PG_CONFIG_OPT} \
+    ${GDAL_CONFIG_OPT} \
     --with-xml2config=${PREFIX}/bin/xml2-config \
     --with-libiconv-prefix=${PREFIX} \
     --with-libintl-prefix=${PREFIX} \
@@ -35,7 +224,14 @@ fi
     --disable-nls \
     --without-interrupt-tests \
     --without-protobuf \
+    ${CONFIGURE_EXTRA_ARGS} \
     || (cat config.log && exit 1)
+
+# On Windows, libtool produces liblwgeom.lib instead of liblwgeom.a, but the
+# Makefiles hardcode the .a extension. Fix references in all generated Makefiles.
+if [[ "${target_platform}" == win-* ]]; then
+    find . -name Makefile | xargs sed -i 's|liblwgeom/.libs/liblwgeom\.a|liblwgeom/.libs/liblwgeom.lib|g'
+fi
 
 make -j$CPU_COUNT
 
@@ -45,4 +241,7 @@ make -j$CPU_COUNT
 # make check
 # stop_db
 
+# Unset SCRIPTS to prevent conda's SCRIPTS env var from being interpreted
+# by PGXS's pgxs.mk as a list of scripts to install.
+unset SCRIPTS
 make install
