@@ -28,14 +28,15 @@ fi
 # like "Datum foo(PG_FUNCTION_ARGS);" without PGDLLEXPORT. Fix all of them
 # so they're consistent with PG_FUNCTION_INFO_V1's dllexport attribute.
 if [[ "${target_platform}" == win-* ]]; then
-    find postgis -name '*.c' -o -name '*.h' | xargs \
-        perl -i -pe 's/^Datum (\w+\(PG_FUNCTION_ARGS\);)$/extern PGDLLEXPORT Datum $1/'
+    find postgis \( -name '*.c' -o -name '*.h' \) \
+        -exec perl -i -pe 's/^Datum (\w+\(PG_FUNCTION_ARGS\);)$/extern PGDLLEXPORT Datum $1/' {} +
+
     # PostGIS defines several functions as 'inline' in .c files but calls them
     # from other translation units. At -O2, clang inlines the body and elides
     # the external symbol, causing link errors. Remove 'inline' so external
     # definitions are always emitted.
-    find . -name '*.c' | xargs \
-        perl -i -pe 's/^inline ((?:bool|void|int|float|double|static|unsigned|char|size_t|const|struct) )/$1/; s/^inline (\w)/$1/'
+    find . -name '*.c' \
+        -exec perl -i -pe 's/^inline ((?:bool|void|int|float|double|static|unsigned|char|size_t|const|struct) )/$1/; s/^inline (\w)/$1/' {} +
 fi
 
 ./autogen.sh
