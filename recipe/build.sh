@@ -28,15 +28,35 @@ fi
 # like "Datum foo(PG_FUNCTION_ARGS);" without PGDLLEXPORT. Fix all of them
 # so they're consistent with PG_FUNCTION_INFO_V1's dllexport attribute.
 if [[ "${target_platform}" == win-* ]]; then
-    find postgis \( -name '*.c' -o -name '*.h' \) \
-        -exec perl -i -pe 's/^Datum (\w+\(PG_FUNCTION_ARGS\);)$/extern PGDLLEXPORT Datum $1/' {} +
+    # Use perl -MFile::Find instead of find -exec to avoid "environment too
+    # large for exec()" on Windows: vcvarsall.bat inflates the environment to
+    # near the exec() limit, and find's child-exec of perl pushes it over.
+    perl -MFile::Find -e '
+        my @files;
+        find(sub { push @files, $File::Find::name if -f && /\.(c|h)$/ }, "postgis");
+        $^I = "";
+        @ARGV = @files;
+        while (<>) {
+            s/^Datum (\w+\(PG_FUNCTION_ARGS\);)$/extern PGDLLEXPORT Datum $1/;
+            print;
+        }
+    '
 
     # PostGIS defines several functions as 'inline' in .c files but calls them
     # from other translation units. At -O2, clang inlines the body and elides
     # the external symbol, causing link errors. Remove 'inline' so external
     # definitions are always emitted.
-    find . -name '*.c' \
-        -exec perl -i -pe 's/^inline ((?:bool|void|int|float|double|static|unsigned|char|size_t|const|struct) )/$1/; s/^inline (\w)/$1/' {} +
+    perl -MFile::Find -e '
+        my @files;
+        find(sub { push @files, $File::Find::name if -f && /\.c$/ }, ".");
+        $^I = "";
+        @ARGV = @files;
+        while (<>) {
+            s/^inline ((?:bool|void|int|float|double|static|unsigned|char|size_t|const|struct) )/$1/;
+            s/^inline (\w)/$1/;
+            print;
+        }
+    '
 fi
 
 ./autogen.sh
@@ -270,7 +290,17 @@ fi
 # On Windows, libtool produces liblwgeom.lib instead of liblwgeom.a, but the
 # Makefiles hardcode the .a extension. Fix references in all generated Makefiles.
 if [[ "${target_platform}" == win-* ]]; then
-    find . -name Makefile | xargs sed -i 's|liblwgeom/.libs/liblwgeom\.a|liblwgeom/.libs/liblwgeom.lib|g'
+    # Avoid find | xargs sed for the same exec() size reason
+    perl -MFile::Find -e '
+        my @files;
+        find(sub { push @files, $File::Find::name if -f && $_ eq "Makefile" }, ".");
+        $^I = "";
+        @ARGV = @files;
+        while (<>) {
+            s|liblwgeom/\.libs/liblwgeom\.a|liblwgeom/.libs/liblwgeom.lib|g;
+            print;
+        }
+    '
 fi
 # Ensure upgrade SQL exists for utils/postgis_restore_data.generated
 make -C postgis postgis_upgrade.sql
