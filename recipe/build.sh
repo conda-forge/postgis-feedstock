@@ -121,8 +121,14 @@ COMPATEOF
     # instead of MSVC atomics that pull in <intrin.h> with broken MMX types.
     # Only set for C (not C++) to avoid conflicts with MSVC C++ STL headers.
     export CFLAGS="${WIN_COMPAT_DEFS} -D__GNUC__=4 ${CFLAGS}"
-    # MSVC C++ STL headers require C++14 or later
-    export CXXFLAGS="${WIN_COMPAT_DEFS} -std=c++17 ${CXXFLAGS}"
+    # MSVC C++ STL headers require C++14 or later.
+    # -mno-mmx prevents __MMX__ from being defined, which stops immintrin.h
+    # from including mmintrin.h. Clang 21's mmintrin.h uses GNU C compound
+    # vector literals that are not valid C++; on Windows SDK 10.0.26100.0+,
+    # wchar.h pulls in intrin.h -> mmintrin.h through the MSVC STL chain
+    # (algorithm -> __msvc_heap_algorithms.hpp -> xutility -> cwchar -> wchar.h).
+    # PostGIS and FlatBuffers do not use MMX intrinsics directly, so this is safe.
+    export CXXFLAGS="${WIN_COMPAT_DEFS} -std=c++17 -mno-mmx ${CXXFLAGS}"
     export CPPFLAGS="${WIN_COMPAT_DEFS} ${CPPFLAGS}"
 fi
 
