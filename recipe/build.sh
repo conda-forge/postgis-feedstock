@@ -123,16 +123,20 @@ COMPATEOF
     export CFLAGS="${WIN_COMPAT_DEFS} -D__GNUC__=4 ${CFLAGS}"
     # MSVC C++ STL headers require C++14 or later.
     # On Windows SDK 10.0.26100.0+, the MSVC STL pulls in wchar.h -> intrin.h ->
-    # x86intrin.h -> immintrin.h -> mmintrin.h/xmmintrin.h/emmintrin.h through
-    # the chain: algorithm -> __msvc_heap_algorithms.hpp -> xutility -> cwchar.
-    # wchar.h itself uses __m128i/_mm_set1_epi16 directly, and intrin.h declares
-    # __m64, so these headers must be included and cannot be blocked.
-    # In clang 22 the intrinsics headers added constexpr to functions that use
-    # GNU C compound literals (e.g. (__v2si){__i, 0}). Those literals are not
-    # valid in strict -std=c++17 mode, causing cascading errors. -std=gnu++17
-    # enables GNU extensions (including compound literals) while still providing
-    # all C++17 features, allowing clang 22's constexpr intrinsics to compile.
-    export CXXFLAGS="${WIN_COMPAT_DEFS} -std=gnu++17 ${CXXFLAGS}"
+    # x86intrin.h -> immintrin.h -> mmintrin.h through the chain:
+    # algorithm -> __msvc_heap_algorithms.hpp -> xutility -> cwchar -> wchar.h.
+    # In clang 22, __DEFAULT_FN_ATTRS_SSE2 (and similar macros) gained a
+    # constexpr annotation gated on __cplusplus >= 201703L. With -std=c++17 or
+    # -std=gnu++17 (__cplusplus = 201703L) constexpr is applied to intrinsics
+    # functions whose bodies use GNU C compound literals (e.g. (__v2si){x, 0}).
+    # clang rejects compound literals inside constexpr functions in MSVC-compat
+    # C++ mode, causing cascading errors across mmintrin.h/xmmintrin.h/etc.
+    # Using -std=c++14 (__cplusplus = 201402L) keeps constexpr off those
+    # functions. It also sets _MSVC_LANG=201402L, which gates out the SSE2
+    # intrinsics path in wchar.h (guarded by _MSVC_LANG >= 201703L), removing
+    # the entire problematic include chain. FlatBuffers requires only C++11
+    # and PostGIS's C++ files use no C++17-specific features, so this is safe.
+    export CXXFLAGS="${WIN_COMPAT_DEFS} -std=c++14 ${CXXFLAGS}"
     export CPPFLAGS="${WIN_COMPAT_DEFS} ${CPPFLAGS}"
 fi
 
