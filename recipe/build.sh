@@ -123,17 +123,16 @@ COMPATEOF
     export CFLAGS="${WIN_COMPAT_DEFS} -D__GNUC__=4 ${CFLAGS}"
     # MSVC C++ STL headers require C++14 or later.
     # On Windows SDK 10.0.26100.0+, the MSVC STL pulls in wchar.h -> intrin.h ->
-    # x86intrin.h -> immintrin.h -> mmintrin.h/xmmintrin.h/emmintrin.h/... through
+    # x86intrin.h -> immintrin.h -> mmintrin.h/xmmintrin.h/emmintrin.h through
     # the chain: algorithm -> __msvc_heap_algorithms.hpp -> xutility -> cwchar.
-    # In clang 22, these intrinsics headers added constexpr to functions that use
-    # C compound literals (e.g. (__v4sf){a,b,c,d}), which are not valid in C++.
-    # This causes cascading errors across every header in the chain (mmintrin.h,
-    # xmmintrin.h, emmintrin.h, etc.). Rather than blocking headers one by one,
-    # -D__X86INTRIN_H pre-satisfies x86intrin.h's header guard so intrin.h's
-    # unconditional include of it becomes a no-op, stopping the entire cascade.
-    # intrin.h itself still provides MSVC-compatible scalar intrinsics.
-    # PostGIS and FlatBuffers do not use x86 SIMD intrinsics directly, so this is safe.
-    export CXXFLAGS="${WIN_COMPAT_DEFS} -std=c++17 -D__X86INTRIN_H ${CXXFLAGS}"
+    # wchar.h itself uses __m128i/_mm_set1_epi16 directly, and intrin.h declares
+    # __m64, so these headers must be included and cannot be blocked.
+    # In clang 22 the intrinsics headers added constexpr to functions that use
+    # GNU C compound literals (e.g. (__v2si){__i, 0}). Those literals are not
+    # valid in strict -std=c++17 mode, causing cascading errors. -std=gnu++17
+    # enables GNU extensions (including compound literals) while still providing
+    # all C++17 features, allowing clang 22's constexpr intrinsics to compile.
+    export CXXFLAGS="${WIN_COMPAT_DEFS} -std=gnu++17 ${CXXFLAGS}"
     export CPPFLAGS="${WIN_COMPAT_DEFS} ${CPPFLAGS}"
 fi
 
