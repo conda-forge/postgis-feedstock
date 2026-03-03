@@ -122,18 +122,18 @@ COMPATEOF
     # Only set for C (not C++) to avoid conflicts with MSVC C++ STL headers.
     export CFLAGS="${WIN_COMPAT_DEFS} -D__GNUC__=4 ${CFLAGS}"
     # MSVC C++ STL headers require C++14 or later.
-    # On Windows SDK 10.0.26100.0+, wchar.h pulls in intrin.h -> x86intrin.h ->
-    # immintrin.h through the MSVC STL chain (algorithm -> __msvc_heap_algorithms.hpp
-    # -> xutility -> cwchar -> wchar.h). In clang 21, immintrin.h's include of
-    # mmintrin.h was guarded by #ifdef __MMX__, so -mno-mmx was sufficient. In
-    # clang 22, immintrin.h includes mmintrin.h unconditionally at line 19, so
-    # -mno-mmx alone no longer prevents it. With -mno-mmx, the MMX vector types
-    # lose their vector attribute and mmintrin.h's constexpr functions fail to
-    # compile. -D__MMINTRIN_H pre-satisfies mmintrin.h's header guard so the
-    # unconditional include becomes a no-op. -mno-mmx is still needed to keep
-    # __MMX__ undefined so emmintrin.h skips its own MMX-dependent sections.
-    # PostGIS and FlatBuffers do not use MMX intrinsics directly, so this is safe.
-    export CXXFLAGS="${WIN_COMPAT_DEFS} -std=c++17 -mno-mmx -D__MMINTRIN_H ${CXXFLAGS}"
+    # On Windows SDK 10.0.26100.0+, the MSVC STL pulls in wchar.h -> intrin.h ->
+    # x86intrin.h -> immintrin.h -> mmintrin.h/xmmintrin.h/emmintrin.h/... through
+    # the chain: algorithm -> __msvc_heap_algorithms.hpp -> xutility -> cwchar.
+    # In clang 22, these intrinsics headers added constexpr to functions that use
+    # C compound literals (e.g. (__v4sf){a,b,c,d}), which are not valid in C++.
+    # This causes cascading errors across every header in the chain (mmintrin.h,
+    # xmmintrin.h, emmintrin.h, etc.). Rather than blocking headers one by one,
+    # -D__X86INTRIN_H pre-satisfies x86intrin.h's header guard so intrin.h's
+    # unconditional include of it becomes a no-op, stopping the entire cascade.
+    # intrin.h itself still provides MSVC-compatible scalar intrinsics.
+    # PostGIS and FlatBuffers do not use x86 SIMD intrinsics directly, so this is safe.
+    export CXXFLAGS="${WIN_COMPAT_DEFS} -std=c++17 -D__X86INTRIN_H ${CXXFLAGS}"
     export CPPFLAGS="${WIN_COMPAT_DEFS} ${CPPFLAGS}"
 fi
 
