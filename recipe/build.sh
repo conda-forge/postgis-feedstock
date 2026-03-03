@@ -128,26 +128,60 @@ COMPATEOF
     # Clang's x86 intrinsics headers have two classes of issues in MSVC-compat C++:
     #
     # 1) constexpr: clang 22 added constexpr to __DEFAULT_FN_ATTRS_SSE2 and
-    #    __DEFAULT_FN_ATTRS_CONSTEXPR gated on (__cplusplus >= 201103L) — every
-    #    C++ mode. Fix: replace the condition with 0.
+    #    __DEFAULT_FN_ATTRS_CONSTEXPR gated on (__cplusplus >= 201103L). Fix:
+    #    replace the condition with 0 in all patched *intrin*.h headers.
     #
-    # 2) GNU C compound literals: bodies like `(__v2si){__i, 0}` and
-    #    `__extension__(__v2di){}` use C99 compound literal syntax which is
-    #    rejected in MSVC-compat C++ mode. Fix: convert to C++ aggregate init:
-    #    - __extension__(TYPE){ → TYPE{  (strips __extension__ wrapper)
-    #    - (TYPE){              → TYPE{  (bare compound literal, __v* types only)
+    # 2) mmintrin.h function bodies use GNU C compound literals AND rely on
+    #    __v* typedef types (e.g. __v2si, __v8hi) being recognized as GCC vector
+    #    extension types. In MSVC-compat C++ mode, __vector_size__ on typedef
+    #    names is ignored and those types degrade to their base scalar types
+    #    (int, short, etc.), making every function body in mmintrin.h invalid.
+    #    No syntax transformation can fix this.
+    #    Fix: provide a stub mmintrin.h that in C++ mode exposes only the type
+    #    definitions (needed by intrin.h declarations) but none of the function
+    #    bodies. In C mode #include_next forwards to the real clang header.
+    #    PostGIS C++ code never calls MMX intrinsics directly, so the missing
+    #    function bodies are harmless.
     #
     # Fix: create patched copies of all *intrin*.h headers and place them first
     # in CXXFLAGS so they shadow clang's built-in includes.
     CLANG_VER=$(ls "${BUILD_PREFIX}/Library/lib/clang/" | sort -V | tail -1)
     PATCHED_INTRIN="${SRC_DIR}/patched_intrin"
     mkdir -p "${PATCHED_INTRIN}"
+
+    # mmintrin.h stub: C++ mode gets only type definitions, C mode gets the real header
+    cat > "${PATCHED_INTRIN}/mmintrin.h" << 'MMSTUB'
+#ifndef __MMINTRIN_H
+#define __MMINTRIN_H
+#ifndef __cplusplus
+/* C mode: forward to the real clang mmintrin.h */
+#include_next <mmintrin.h>
+#else
+/* C++ MSVC-compat mode: __vector_size__ on typedef names is dropped, making
+ * all __v* types degrade to scalars and every function body in mmintrin.h
+ * invalid. Provide only the type definitions that intrin.h declarations need;
+ * PostGIS C++ code never calls MMX intrinsics, so no bodies are required. */
+typedef long long __m64 __attribute__((__vector_size__(8), __aligned__(8)));
+typedef int       __v2si __attribute__((__vector_size__(8)));
+typedef short     __v4hi __attribute__((__vector_size__(8)));
+typedef char      __v8qi __attribute__((__vector_size__(8)));
+typedef long long __v1di __attribute__((__vector_size__(8)));
+typedef long long __v2di __attribute__((__vector_size__(16)));
+typedef int       __v4si __attribute__((__vector_size__(16)));
+typedef short     __v8hi __attribute__((__vector_size__(16)));
+typedef float     __v2sf __attribute__((__vector_size__(8)));
+#endif /* !__cplusplus */
+#endif /* __MMINTRIN_H */
+MMSTUB
+
     for hdr in "${BUILD_PREFIX}/Library/lib/clang/${CLANG_VER}/include/"*intrin*.h; do
+        base=$(basename "${hdr}")
+        [[ "${base}" == "mmintrin.h" ]] && continue   # already written above
         perl -pe '
             s/\(__cplusplus >= 201103L\)/0/g;
             s/__extension__\((__[vm]\w+)\)\{/$1\{/g;
             s/\((__v\w+)\)\{/$1\{/g;
-        ' "${hdr}" > "${PATCHED_INTRIN}/$(basename ${hdr})"
+        ' "${hdr}" > "${PATCHED_INTRIN}/${base}"
     done
     export CXXFLAGS="${WIN_COMPAT_DEFS} -I${PATCHED_INTRIN} -std=c++14 ${CXXFLAGS}"
     export CPPFLAGS="${WIN_COMPAT_DEFS} ${CPPFLAGS}"
