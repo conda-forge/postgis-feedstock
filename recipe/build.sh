@@ -125,22 +125,29 @@ COMPATEOF
     # On Windows SDK 10.0.26100.0+, the MSVC STL pulls in wchar.h -> intrin.h ->
     # x86intrin.h -> immintrin.h -> mmintrin.h/xmmintrin.h/... through the chain:
     # algorithm -> __msvc_heap_algorithms.hpp -> xutility -> cwchar -> wchar.h.
-    # In clang 22, intrinsics headers gained constexpr annotations on their
-    # function attribute macros (__DEFAULT_FN_ATTRS_SSE2, __DEFAULT_FN_ATTRS_CONSTEXPR,
-    # etc.) gated on __cplusplus >= 201103L — i.e. every C++ compilation mode.
-    # In MSVC-compat C++ mode, clang rejects the GNU C compound literals used in
-    # those constexpr function bodies (e.g. (__v2si){x, 0}), causing cascading
-    # errors. No -std= flag can avoid this since the threshold is C++11.
-    # Fix: create patched copies of all *intrin*.h headers where the condition
-    # (__cplusplus >= 201103L) is replaced with 0, so the non-constexpr macro
-    # forms are always used. The patched directory is placed first in CXXFLAGS
-    # so it shadows clang's built-in includes.
+    # Clang's x86 intrinsics headers have two classes of issues in MSVC-compat C++:
+    #
+    # 1) constexpr: clang 22 added constexpr to __DEFAULT_FN_ATTRS_SSE2 and
+    #    __DEFAULT_FN_ATTRS_CONSTEXPR gated on (__cplusplus >= 201103L) — every
+    #    C++ mode. Fix: replace the condition with 0.
+    #
+    # 2) GNU C compound literals: bodies like `(__v2si){__i, 0}` and
+    #    `__extension__(__v2di){}` use C99 compound literal syntax which is
+    #    rejected in MSVC-compat C++ mode. Fix: convert to C++ aggregate init:
+    #    - __extension__(TYPE){ → TYPE{  (strips __extension__ wrapper)
+    #    - (TYPE){              → TYPE{  (bare compound literal, __v* types only)
+    #
+    # Fix: create patched copies of all *intrin*.h headers and place them first
+    # in CXXFLAGS so they shadow clang's built-in includes.
     CLANG_VER=$(ls "${BUILD_PREFIX}/Library/lib/clang/" | sort -V | tail -1)
     PATCHED_INTRIN="${SRC_DIR}/patched_intrin"
     mkdir -p "${PATCHED_INTRIN}"
     for hdr in "${BUILD_PREFIX}/Library/lib/clang/${CLANG_VER}/include/"*intrin*.h; do
-        perl -pe 's/\(__cplusplus >= 201103L\)/0/g' "${hdr}" \
-            > "${PATCHED_INTRIN}/$(basename ${hdr})"
+        perl -pe '
+            s/\(__cplusplus >= 201103L\)/0/g;
+            s/__extension__\((__[vm]\w+)\)\{/$1\{/g;
+            s/\((__v\w+)\)\{/$1\{/g;
+        ' "${hdr}" > "${PATCHED_INTRIN}/$(basename ${hdr})"
     done
     export CXXFLAGS="${WIN_COMPAT_DEFS} -I${PATCHED_INTRIN} -std=c++14 ${CXXFLAGS}"
     export CPPFLAGS="${WIN_COMPAT_DEFS} ${CPPFLAGS}"
