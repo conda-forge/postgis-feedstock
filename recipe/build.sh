@@ -123,20 +123,26 @@ COMPATEOF
     export CFLAGS="${WIN_COMPAT_DEFS} -D__GNUC__=4 ${CFLAGS}"
     # MSVC C++ STL headers require C++14 or later.
     # On Windows SDK 10.0.26100.0+, the MSVC STL pulls in wchar.h -> intrin.h ->
-    # x86intrin.h -> immintrin.h -> mmintrin.h through the chain:
+    # x86intrin.h -> immintrin.h -> mmintrin.h/xmmintrin.h/... through the chain:
     # algorithm -> __msvc_heap_algorithms.hpp -> xutility -> cwchar -> wchar.h.
-    # In clang 22, __DEFAULT_FN_ATTRS_SSE2 (and similar macros) gained a
-    # constexpr annotation gated on __cplusplus >= 201703L. With -std=c++17 or
-    # -std=gnu++17 (__cplusplus = 201703L) constexpr is applied to intrinsics
-    # functions whose bodies use GNU C compound literals (e.g. (__v2si){x, 0}).
-    # clang rejects compound literals inside constexpr functions in MSVC-compat
-    # C++ mode, causing cascading errors across mmintrin.h/xmmintrin.h/etc.
-    # Using -std=c++14 (__cplusplus = 201402L) keeps constexpr off those
-    # functions. It also sets _MSVC_LANG=201402L, which gates out the SSE2
-    # intrinsics path in wchar.h (guarded by _MSVC_LANG >= 201703L), removing
-    # the entire problematic include chain. FlatBuffers requires only C++11
-    # and PostGIS's C++ files use no C++17-specific features, so this is safe.
-    export CXXFLAGS="${WIN_COMPAT_DEFS} -std=c++14 ${CXXFLAGS}"
+    # In clang 22, intrinsics headers gained constexpr annotations on their
+    # function attribute macros (__DEFAULT_FN_ATTRS_SSE2, __DEFAULT_FN_ATTRS_CONSTEXPR,
+    # etc.) gated on __cplusplus >= 201103L — i.e. every C++ compilation mode.
+    # In MSVC-compat C++ mode, clang rejects the GNU C compound literals used in
+    # those constexpr function bodies (e.g. (__v2si){x, 0}), causing cascading
+    # errors. No -std= flag can avoid this since the threshold is C++11.
+    # Fix: create patched copies of all *intrin*.h headers where the condition
+    # (__cplusplus >= 201103L) is replaced with 0, so the non-constexpr macro
+    # forms are always used. The patched directory is placed first in CXXFLAGS
+    # so it shadows clang's built-in includes.
+    CLANG_VER=$(ls "${BUILD_PREFIX}/Library/lib/clang/" | sort -V | tail -1)
+    PATCHED_INTRIN="${SRC_DIR}/patched_intrin"
+    mkdir -p "${PATCHED_INTRIN}"
+    for hdr in "${BUILD_PREFIX}/Library/lib/clang/${CLANG_VER}/include/"*intrin*.h; do
+        perl -pe 's/\(__cplusplus >= 201103L\)/0/g' "${hdr}" \
+            > "${PATCHED_INTRIN}/$(basename ${hdr})"
+    done
+    export CXXFLAGS="${WIN_COMPAT_DEFS} -I${PATCHED_INTRIN} -std=c++14 ${CXXFLAGS}"
     export CPPFLAGS="${WIN_COMPAT_DEFS} ${CPPFLAGS}"
 fi
 
