@@ -1,7 +1,7 @@
 c_compiler:
 - gcc
 c_compiler_version:
-- '14'
+- '15'
 c_stdlib:
 - sysroot
 c_stdlib_version:
@@ -13,9 +13,9 @@ channel_targets:
 cxx_compiler:
 - gxx
 cxx_compiler_version:
-- '14'
+- '15'
 docker_image:
-- quay.io/condaforge/linux-anvil-x86_64:alma9
+- quay.io/condaforge/linux-anvil-aarch64:alma10
 geos:
 - 3.14.1
 json_c:
@@ -29,13 +29,13 @@ liblzma_devel:
 libpq:
 - '18'
 libxml2_devel:
-- '2.14'
+- '2.15'
 pcre2:
 - '10.47'
 postgresql:
 - '18'
 proj:
-- '9.8'
+- '9.9'
 target_platform:
 - linux-aarch64
 zip_keys:
