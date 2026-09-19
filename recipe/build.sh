@@ -3,7 +3,11 @@ set -e
 
 . ${RECIPE_DIR}/pg.sh
 
-export CPPBIN="${CPP}"
+# postgis's configure only honours a preset CPPBIN if it is an absolute path;
+# otherwise it searches PATH for a bare `cpp`, which conda's compilers don't
+# provide (and a bug in configure.ac then leaves SQLPP empty instead of
+# falling back to ${CPP}).
+export CPPBIN="$(command -v "${CPP}")"
 
 # Newer protobuf-c dropped the standalone protoc-c binary; provide a shim
 # that delegates to protoc (which uses protoc-gen-c as a plugin).
