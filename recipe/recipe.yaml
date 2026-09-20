@@ -37,7 +37,7 @@ requirements:
     - json-c
     - postgresql
     - libpq
-    - libxml2
+    - libxml2-devel
     - liblzma-devel
   run:
     - postgresql
