@@ -37,7 +37,7 @@ fi
     --libdir=${PREFIX}/lib \
     --includedir=${PREFIX}/include \
     --with-geosconfig=$PREFIX/bin/geos-config \
-    --with-pgconfig=${pg_config_path} \
+    --with-pgconfig=${PREFIX}/bin/pg_config \
     --with-gdalconfig=${PREFIX}/bin/gdal-config \
     --with-xml2config=${PREFIX}/bin/xml2-config \
     --with-libiconv-prefix=${PREFIX} \
