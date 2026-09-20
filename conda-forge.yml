@@ -1,3 +1,6 @@
+bot:
+  abi_migration_branches:
+  - 3.5.x
 conda_build:
   pkg_format: '2'
 conda_build_tool: rattler-build
