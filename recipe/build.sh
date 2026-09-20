@@ -3,13 +3,25 @@ set -e
 
 . ${RECIPE_DIR}/pg.sh
 
-export CPPBIN="${CPP}"
+# postgis's configure only honours a preset CPPBIN if it is an absolute path;
+# otherwise it searches PATH for a bare `cpp`, which conda's compilers don't
+# provide (and a bug in configure.ac then leaves SQLPP empty instead of
+# falling back to ${CPP}).
+export CPPBIN="$(command -v "${CPP}")"
 
 ./autogen.sh
 
 # OSX seems to be having trouble finding stdc++
 # see note at https://postgis.net/docs/manual-3.2/postgis_installation.html#PGInstall
 export LDFLAGS="-lstdc++ $LDFLAGS"
+
+# Work around macOS PGXS injecting unsupported '-fuse-ld=lld' into link flags
+if [[ "${target_platform}" == osx-* ]]; then
+    pgxs_makefile="${PREFIX}/lib/pgxs/src/Makefile.global"
+    if [[ -f "${pgxs_makefile}" ]]; then
+        sed -i.bak 's/ -fuse-ld=lld//g' "${pgxs_makefile}"
+    fi
+fi
 
 ./configure \
     --prefix=${PREFIX} \
