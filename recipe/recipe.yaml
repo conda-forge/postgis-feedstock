@@ -1,22 +1,25 @@
-{% set version = "3.5.3" %}
+schema_version: 1
+
+context:
+  version: "3.5.3"
 
 package:
   name: postgis
-  version: {{ version }}
+  version: ${{ version }}
 
 source:
-  url: https://github.com/postgis/postgis/archive/{{ version }}.tar.gz
+  url: https://github.com/postgis/postgis/archive/${{ version }}.tar.gz
   sha256: 44222ed2b8f742ffc1ceb429b09ebb484c7880f9ba27bf7b6b197346cdd25437
 
 build:
-  number: 2
-  skip: true  # [win]
+  number: 3
+  skip: win
 
 requirements:
   build:
-    - {{ compiler('c') }}
-    - {{ stdlib("c") }}
-    - {{ compiler('cxx') }}
+    - ${{ compiler('c') }}
+    - ${{ stdlib("c") }}
+    - ${{ compiler('cxx') }}
     - pkg-config
     - autoconf
     - automake
@@ -39,27 +42,29 @@ requirements:
   run:
     - postgresql
 
-test:
-  files:
-    - test_data
-  commands:
-    - shp2pgsql test_data/test.shp
-    - pgsql2shp
-    - raster2pgsql
+tests:
+  - files:
+      recipe:
+        - test_data
+        - run_test.sh
+        - pg.sh
+    script:
+      - shp2pgsql test_data/test.shp
+      - pgsql2shp
+      - raster2pgsql
+      - bash run_test.sh
 
 about:
-  home: http://postgis.net
   license: GPL-2.0-or-later
-  license_family: GPL
   license_file: LICENSE.TXT
   summary: PostGIS adds geometry, geography, raster and other types to the PostgreSQL database.
-
   description: |
     PostGIS is a spatial database extender for PostgreSQL object-relational
     database. It adds support for geographic objects allowing location
     queries to be run in SQL.
-  doc_url: http://postgis.net/documentation/
-  dev_url: https://git.osgeo.org/gitea/postgis/postgis
+  homepage: http://postgis.net
+  repository: https://git.osgeo.org/gitea/postgis/postgis
+  documentation: http://postgis.net/documentation/
 
 extra:
   recipe-maintainers:
