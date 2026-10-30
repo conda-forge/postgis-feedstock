@@ -33,7 +33,7 @@ requirements:
     - cunit
     - libgdal-core
     - geos
-    - pcre2
+    - gmp
     - proj
     - json-c
     - postgresql
