@@ -1,7 +1,7 @@
 schema_version: 1
 
 context:
-  version: "3.6.4"
+  version: "3.7.0"
 
 package:
   name: postgis
@@ -9,10 +9,10 @@ package:
 
 source:
   url: https://github.com/postgis/postgis/archive/${{ version }}.tar.gz
-  sha256: 4f80e1a4d227f088ae818f79180debd5894c075615823e0f556f73479cf1f200
+  sha256: 306d68a115b88c59d9ffbd134b28fd1b0eccb7b0dabcbb5df2dc0b009d9de848
 
 build:
-  number: 2
+  number: 0
   skip: win
 
 requirements:
@@ -33,7 +33,7 @@ requirements:
     - cunit
     - libgdal-core
     - geos
-    - pcre2
+    - gmp
     - proj
     - json-c
     - postgresql

@@ -50,10 +50,15 @@ fi
     --without-interrupt-tests \
     || (cat config.log && exit 1)
 
-# Ensure upgrade SQL exists for utils/postgis_restore_data.generated
-make -C postgis postgis_upgrade.sql
+# postgresql is built with LLVM JIT, so PGXS would compile LLVM bitcode with
+# the clang from postgresql's own build environment, which doesn't exist here.
+# Skip the bitcode; JIT then simply doesn't inline postgis functions.
+MAKE_ARGS="with_llvm=no"
 
-make -j$CPU_COUNT
+# Ensure upgrade SQL exists for utils/postgis_restore_data.generated
+make -C postgis postgis_upgrade.sql ${MAKE_ARGS}
+
+make -j$CPU_COUNT ${MAKE_ARGS}
 
 # Only one test is failing on macOS and Linux.
 # commenting this for now until we have a new release.
@@ -61,4 +66,4 @@ make -j$CPU_COUNT
 # make check
 # stop_db
 
-make install
+make install ${MAKE_ARGS}

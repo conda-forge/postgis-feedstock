@@ -7,10 +7,7 @@ source pg.sh
 test_create_extension()
 {
     extensions="postgis
-     fuzzystrmatch
-     address_standardizer
-     address_standardizer_data_us
-     postgis_tiger_geocoder
+     postgis_raster
      postgis_topology"
 
    for extension in $extensions; do 
