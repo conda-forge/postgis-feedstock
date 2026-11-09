@@ -41,7 +41,12 @@ fi
     --without-protobuf \
     || (cat config.log && exit 1)
 
-make -j$CPU_COUNT
+# postgresql is built with LLVM JIT, so PGXS would compile LLVM bitcode with
+# the clang from postgresql's own build environment, which doesn't exist here.
+# Skip the bitcode; JIT then simply doesn't inline postgis functions.
+MAKE_ARGS="with_llvm=no"
+
+make -j$CPU_COUNT ${MAKE_ARGS}
 
 # Only one test is failing on macOS and Linux.
 # commenting this for now until we have a new release.
@@ -49,4 +54,4 @@ make -j$CPU_COUNT
 # make check
 # stop_db
 
-make install
+make install ${MAKE_ARGS}
