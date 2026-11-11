@@ -21,7 +21,7 @@ docker_image:
 geos:
 - 3.15.0
 json_c:
-- '0.18'
+- '0.19'
 libgdal_core:
 - '3.13'
 liblzma_devel:
